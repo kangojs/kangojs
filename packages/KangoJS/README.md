@@ -14,10 +14,10 @@
 
 
 ## Features
-- Declare route controllers & routes by adding decorators to classes.
+- Declare routes by adding decorators to classes.
 - Concepts such as protected routes and request validation are built in.
-- Approach agnostic. You are responsible for registering request validation & route authentication functions yourself which allows
-  you the freedom to use any approach you wish for these.
+- Approach agnostic request logic. You are responsible for registering request validation & route authentication 
+functions yourself which gives you the freedom to use any implementation you wish.
 
 ## Installation
 ```shell
@@ -25,10 +25,56 @@ npm install kango.js
 ```
 
 ## Usage
-TODO
+To use kango.js simply bootstrap it with your Express app like so:
+```ts
+import express from 'express';
+import { ControllerLoader } from 'kango.js';
 
-## Examples
-TODO
+const app = express();
+
+const controllerLoader = new ControllerLoader({
+  globalPrefix: "/api/v1",
+  controllerFilesGlob: "src/modules/*.controller.ts",
+});
+await controllerLoader.boostrap(app);
+```
+
+You can then create controller class files (in locations that match `controllerFilesGlob`) and use the 
+`@Controller` and `@Route` decorators to add the information that kango.js needs to generate the Express routes:
+```ts
+import { Request, Response } from 'express';
+import { Controller, HTTPMethods, Route } from 'kango.js';
+
+@Controller('/users')
+class UserController {
+  constructor() {}
+
+  @Route({
+    httpMethod: HTTPMethods.GET,
+    protected: false,
+  })
+  async getMessage(req: Request, res: Response) {
+    return res.send("You have just called the /users [GET] endpoint.");
+  }
+
+  @Route({
+    path: "/:id",
+    httpMethod: HTTPMethods.GET
+  })
+  async getUser(req: Request, res: Response) {
+    return res.send(`You have just requested user ${+req.params.id} from /users/:id [GET].`);
+  }
+
+  @Route({
+    httpMethod: HTTPMethods.POST
+  })
+  async getUser(req: Request, res: Response) {
+    return res.send(`You have just tried to add a new user via the /users [POST] endpoint.`);
+  }
+}
+
+export default UserController;
+```
 
 ## Feedback & Contributions
 I'm open to feedback and contributions. Feel free to raise an issue or suggest improvements and features on GitHub.
