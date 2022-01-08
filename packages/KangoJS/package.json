@@ -18,8 +18,8 @@
     "express",
     "decorators",
     "routing",
-    "dependency injection",
-    "typescript"
+    "typescript",
+    "framework"
   ],
   "devDependencies": {
     "@types/express": "^4.17.13",
