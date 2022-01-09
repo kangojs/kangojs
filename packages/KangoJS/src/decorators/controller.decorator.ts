@@ -1,12 +1,18 @@
-function Controller(route: string = ''): ClassDecorator {
-  return function(target: any) {
-    Reflect.defineMetadata('route', route, target);
+import { MetadataKeys } from './metadata-keys';
 
-    // Since routes are set by our methods this should almost never be true (except the controller has no methods)
-    if (! Reflect.hasMetadata('routes', target)) {
-      Reflect.defineMetadata('routes', [], target);
+/**
+ * Controller decorator used to mark a class as a controller.
+ *
+ * @param routePrefix - The prefix of all routes in the controller.
+ * @constructor
+ */
+export function Controller(routePrefix: string = ''): ClassDecorator {
+  return function(target: any) {
+    Reflect.defineMetadata(MetadataKeys.ROUTE_PREFIX, routePrefix, target);
+
+    // Routes metadata will most likely be set by a route decorator.
+    if (!Reflect.hasMetadata(MetadataKeys.ROUTES, target)) {
+      Reflect.defineMetadata(MetadataKeys.ROUTES, [], target);
     }
   };
 }
-
-export { Controller }

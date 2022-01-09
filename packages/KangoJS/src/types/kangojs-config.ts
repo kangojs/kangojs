@@ -1,19 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 
-interface ControllerLoaderConfig {
+/**
+ * Configuration used internally in the main KangoJS object.
+ */
+export interface KangoJSConfig {
   controllerFilesGlob: string;
   globalPrefix: string | null;
 }
 
-interface ControllerLoaderConstructorOptions {
+/**
+ * Options that can be passed to KangoJS when it's instantiated.
+ */
+export interface KangoJSOptions {
   controllerFilesGlob: string;
   globalPrefix?: string | null;
   authFunction?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
   validateBody?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
   validateQuery?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-}
-
-export {
-  ControllerLoaderConfig,
-  ControllerLoaderConstructorOptions
 }

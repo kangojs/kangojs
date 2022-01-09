@@ -1,11 +1,12 @@
 import { HTTPMethods } from '../utils/http-methods';
 
-interface RouteDefinition {
+/**
+ * The route definition passed to the @Route decorator.
+ */
+export interface RouteDefinition {
   path?: string;
   httpMethod: HTTPMethods;
-  protected?: boolean;
+  authRequired?: boolean;
   bodyShape?: any;
   queryShape?: any;
 }
-
-export { RouteDefinition }

@@ -1,11 +1,12 @@
-export * from "./controller-loader";
+export * from './kangojs';
 
-export * from "./utils/http-methods";
-export * from "./utils/http-status-codes";
+export * from './utils/http-methods';
+export * from './utils/http-status-codes';
 
-export * from "./decorators/controller.decorator";
-export * from "./decorators/route.decorator";
+export * from './decorators/metadata-keys'
+export * from './decorators/controller.decorator';
+export * from './decorators/route.decorator';
 
-export * from "./types/route-definition";
-export * from "./types/route-metadata";
-export * from "./types/controller-loader-config";
+export * from './types/route-definition';
+export * from './types/route-metadata';
+export * from './types/kangojs-config';

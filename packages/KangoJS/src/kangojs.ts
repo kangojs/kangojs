@@ -1,53 +1,56 @@
-/**
- * Load all module controllers and setup the connection between
- * ExpressJS routing and the correct controller.
- *
- * Use of routing decorators based on https://nehalist.io/routing-with-typescript-decorators/#registeringroutes.
- */
-
-import "reflect-metadata";
+import 'reflect-metadata';
 
 import { Application, Router, Request, Response, NextFunction } from 'express';
-import glob from "glob-promise";
+import glob from 'glob-promise';
 
+import { KangoJSConfig, KangoJSOptions } from './types/kangojs-config';
+import { MetadataKeys } from './decorators/metadata-keys';
 import { HTTPMethods } from './utils/http-methods';
-import { RouteMetadata } from "./types/route-metadata";
-import {
-	ControllerLoaderConfig,
-	ControllerLoaderConstructorOptions
-} from './types/controller-loader-config';
+import { RouteMetadata } from './types/route-metadata';
 
-
-class ControllerLoader {
+/**
+ * The main object that encapsulates and manages all framework features.
+ */
+class KangoJS {
 	private readonly router: Router;
 	private authFunction?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
 	private validateBody?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
 	private validateQuery?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private config: ControllerLoaderConfig;
+	private config: KangoJSConfig;
 
-	constructor(config: ControllerLoaderConstructorOptions) {
+	/**
+	 * The object constructor.
+	 *
+	 * @param options - options for customising how KangoJS works.
+	 */
+	constructor(options: KangoJSOptions) {
 		this.router = Router();
 
 		this.config = {
-			controllerFilesGlob: config.controllerFilesGlob,
-			globalPrefix: config.globalPrefix ? config.globalPrefix : null,
+			controllerFilesGlob: options.controllerFilesGlob,
+			globalPrefix: options.globalPrefix ? options.globalPrefix : null,
 		}
 
-		if (config.authFunction) {
-			this.authFunction = config.authFunction;
+		if (options.authFunction) {
+			this.authFunction = options.authFunction;
 		}
-		if (config.validateBody) {
-			this.validateBody = config.validateBody;
+		if (options.validateBody) {
+			this.validateBody = options.validateBody;
 		}
-		if (config.validateQuery) {
-			this.validateQuery = config.validateQuery;
+		if (options.validateQuery) {
+			this.validateQuery = options.validateQuery;
 		}
 	}
 
+	/**
+	 * The main method that bootstraps KangoJS, loading all controllers & routes etc.
+	 *
+	 * @param app - The Express app instance to add routes to.
+	 */
 	async boostrap(app: Application) {
 		const controllerFiles = await glob(
 			this.config.controllerFilesGlob,
-			{absolute: true} // Make file paths absolute so imports don't fail when used in a project.
+			{absolute: true} // Make file paths absolute to ensure imports don't fail when used in a project.
 		);
 
 		for (let index = 0; index < controllerFiles.length; index++) {
@@ -64,25 +67,23 @@ class ControllerLoader {
 	}
 
 	async registerController(controller: any) {
-		// todo: instance should be registered to a DI system?
 		const controllerInstance = new controller();
 
 		// Setup controller routes.
-		const controllerGlobalRoute = <string> Reflect.getMetadata('route', controller);
-		const controllerRoutes = <Array<RouteMetadata>> Reflect.getMetadata('routes', controller);
+		const controllerGlobalRoute = <string> Reflect.getMetadata(MetadataKeys.ROUTE_PREFIX, controller);
+		const controllerRoutes = <Array<RouteMetadata>> Reflect.getMetadata(MetadataKeys.ROUTES, controller);
 
 		for (const route of controllerRoutes) {
-			// Setting route path
-			let routePath = controllerGlobalRoute.startsWith("/")
+			// Set route path, making sure to handle if the path has '/' or not.
+			let routePath = controllerGlobalRoute.startsWith('/')
 				? controllerGlobalRoute
 				: `/${controllerGlobalRoute}`;
 
 			if (route.routeDefinition.path) {
-				if (!routePath.endsWith('/')) {
+				if (!routePath.endsWith('/') && !route.routeDefinition.path.startsWith('/')) {
 					routePath += '/';
 				}
-
-				routePath += route.routeDefinition.path.replace('/', '');
+				routePath += route.routeDefinition.path;
 			}
 
 			let routeMiddleware = [];
@@ -109,21 +110,18 @@ class ControllerLoader {
 				}
 			}
 
-			// Assume the route should be protected if it's not specified.
+			// Routes must explicitly set authRequired=false to disable route protection.
 			// This ensures no route is accidentally left unprotected.
-			if (route.routeDefinition.protected || route.routeDefinition.protected === undefined) {
-				const self = this;
-				routeMiddleware.push(
-					function authorizationMiddleware(req: Request, res: Response, next: NextFunction) {
-						if (self.authFunction) {
-							return self.authFunction(req, res, next);
-						}
-
-						throw new Error(`No authFunction registered but ${req.path} is marked as protected.`);
-					}
-				)
+			if (!!route.routeDefinition.authRequired) {
+				if (this.authFunction) {
+					routeMiddleware.push(this.authFunction)
+				}
+				else {
+					throw new Error(`No authFunction registered but ${routePath} requires it.`);
+				}
 			}
 
+			// Bind the controller instance to ensure the method works as expected.
 			routeMiddleware.push(controllerInstance[route.methodName].bind(controllerInstance));
 
 			switch (route.routeDefinition.httpMethod) {
@@ -152,4 +150,4 @@ class ControllerLoader {
 	}
 }
 
-export { ControllerLoader };
+export { KangoJS };

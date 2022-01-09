@@ -1,25 +1,28 @@
+import { MetadataKeys } from './metadata-keys';
 import { RouteDefinition } from '../types/route-definition';
 import { RouteMetadata } from '../types/route-metadata';
 
-
-function Route(routeDefinition: RouteDefinition) {
-  // `target` equals our class, `propertyKey` equals our decorated method name
+/**
+ * Route decorator used to mark a controller method as a route.
+ *
+ * @param routeDefinition - The route data including path, HTTP method etc.
+ * @constructor
+ */
+export function Route(routeDefinition: RouteDefinition) {
   return function (target: Object, propertyKey: string) {
-    // In case this is the first route to be registered the `routes` metadata is likely to be undefined at this point.
-    // To prevent any further validation simply set it to an empty array here.
-    if (! Reflect.hasMetadata('routes', target.constructor)) {
-      Reflect.defineMetadata('routes', [], target.constructor);
+    // Define the 'routes' metadata if it doesn't already exist.
+    // This will only be the case for the first route decorator that's processed.
+    if (!Reflect.hasMetadata(MetadataKeys.ROUTES, target.constructor)) {
+      Reflect.defineMetadata(MetadataKeys.ROUTES, [], target.constructor);
     }
 
-    // Get the routes stored so far, extend it by the new route and re-set the metadata.
-    const routes = Reflect.getMetadata('routes', target.constructor) as Array<RouteMetadata>;
-
+    // Add the new route to the 'routes' metadata that exists on the target object.
+    const routes = Reflect.getMetadata(MetadataKeys.ROUTES, target.constructor) as Array<RouteMetadata>;
     routes.push({
       methodName: propertyKey,
       routeDefinition
     });
-    Reflect.defineMetadata('routes', routes, target.constructor);
+
+    Reflect.defineMetadata(MetadataKeys.ROUTES, routes, target.constructor);
   };
 }
-
-export { Route }

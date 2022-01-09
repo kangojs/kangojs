@@ -1,4 +1,7 @@
-enum HTTPStatusCodes {
+/**
+ * An enum of common HTTP status codes.
+ */
+export enum HTTPStatusCodes {
   OK = 200,
   CREATED = 201,
   MOVED_PERMANENTLY = 301,
@@ -12,5 +15,3 @@ enum HTTPStatusCodes {
   NOT_IMPLEMENTED = 501,
   SERVICE_UNAVAILABLE = 503
 }
-
-export { HTTPStatusCodes };
