@@ -1,0 +1,26 @@
+{
+  "name": "@kangojs/<package-name>",
+  "version": "0.0.0",
+  "description": "Add a description here...",
+  "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
+  "homepage": "https://github.com/kangojs/<package-name>",
+  "bugs": "https://github.com/kangojs/<package-name>/issues",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "husky install",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [],
+  "devDependencies": {
+    "@commitlint/cli": "^16.0.2",
+    "@commitlint/config-conventional": "^16.0.0",
+    "husky": "^7.0.4",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {}
+}
