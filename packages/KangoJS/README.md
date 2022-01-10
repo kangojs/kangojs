@@ -1,6 +1,6 @@
 <div align="center">
 <h1>KangoJS</h1>
-<p>An ExpressJS framework to make writing typescript express apps quicker and easier.</p>
+<p>An Express framework to make writing typescript express apps quicker and easier.</p>
 
 <div>
   <a href="https://www.npmjs.com/package/@kangojs/kangojs" target="_blank">
@@ -12,14 +12,20 @@
 </div>
 </div>
 
+## 🤔 About
+KangoJS was created because I was finding myself copying and pasting the same core functionality across a number of Express projects and I wanted
+a better way to manage this.  
+I looked into a number of existing solutions such as [NestJS](https://nestjs.com/) and [OvernightJS](https://github.com/seanpmaxwell/overnight) but in the end
+I decided to build my own as it's a good learning opportunity for me, and I can make it function exactly how I want.
 
-## Features
+## 💥 Features
 - Declare routes by adding decorators to classes.
 - Concepts such as route authentication and request validation are built in.
-- Approach agnostic request logic. You are responsible for registering request validation & route authentication 
-functions yourself which gives you the freedom to use any implementation you wish.
+- Approach agnostic request logic. You are responsible for registering request validation & route authentication
+  functions yourself which gives you the freedom to use any implementation you wish.
+- Extend the core framework with additional optional packages. See [other KangoJS packages](#-other-kangojs-packages) for details.
 
-## Getting Started
+## 🚀 Getting Started
 Install the npm package:
 ```shell
 npm install @kangojs/kangojs
@@ -31,7 +37,7 @@ To use decorators in typescript you will have to add the following settings to y
 "experimentalDecorators": true,
 ```
 
-## Usage
+## 👷 Usage
 To use KangoJS you can bootstrap it with your Express app like so:
 ```ts
 import express from 'express';
@@ -56,7 +62,7 @@ The following options are available when instantiating `KangoJS`:
 | `validateQuery`       | `(queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>` | An optional function that will be used for request query validation if you add the `queryShape` property to a route.                              | see examples below              |
 
 
-### Project Structure Assumptions 
+### Project Structure Assumptions
 KangoJS has been designed with the assumption that your app will be split into separate modules/components
 where each module/component has its own controller for handling Express routing.  
 This is based on the [module structure of NestJS](https://docs.nestjs.com/modules) and the generally agreed upon [best practise of Node.js app structure](https://github.com/goldbergyoni/nodebestpractices#1-project-structure-practices)
@@ -65,7 +71,7 @@ where applications encapsulate functionality into separate modules/components an
 That being said, the only hard assumption KangoJS enforces is the use of controllers that have routes defined as decorated methods.
 
 ### Controllers
-Controllers are classes that encapsulate ExpressJS request & response logic. KangoJS attempts to load controllers from all files
+Controllers are classes that encapsulate Express request & response logic. KangoJS attempts to load controllers from all files
 that match the `controllerFilesGlob` passed in the options.  
 You mark a class as a controller with the `@Controller` decorator and pass what path the controller will manage, for example:
 
@@ -127,12 +133,22 @@ The following options are available for the `@Route` decorator:
 | `bodyShape`    | `any`                                 | An optional property where you can pass what shape you expect the request body to have (requires the `validateBody` function to be set).                                           |
 | `queryShape`   | `any`                                 | An optional property where you can pass what shape you expect the request query to have (requires the `validateQuery` function to be set).                                         |
 
-## Feedback & Contributions
-I'm open to feedback and contributions. Feel free to raise an issue or suggest improvements and features on [GitHub](https://github.com/kangojs/kangojs).
+## 🧰 Other KangoJS Packages
+**!! PACKAGES COMING SOON !!**
 
-## License
-This project is licensed under the terms of the [MIT license](https://choosealicense.com/licenses/mit/).
+`@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [GitHub](https://github.com/kangojs/kangojs)) is the core framework that you can use to manage controllers and routes.
 
-## Credits
+There are also a number of other KangoJS packages available that offer additional functionality, most can be used with or without the core framework:
+- `@kangojs/class-dtos` ([npm](https://www.npmjs.com/package/@kangojs/class-dtos), [GitHub](https://github.com/kangojs/class-dtos)) - Allows you to create class DTOs (via class-transformer & class-validator) to parse and validate request data.
+- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [GitHub](https://github.com/kangojs/express-query-string)) - Allows you to replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
+- `@kangojs/express-common-middleware` ([npm](https://www.npmjs.com/package/@kangojs/express-common-middleware), [GitHub](https://github.com/kangojs/express-common-middleware)) - Quickly include common Express middleware. Includes `express.json()`, `express.urlencoded()`, [cors](https://www.npmjs.com/package/cors) and [cookie-parser](https://www.npmjs.com/package/cookie-parser).
+
+## 💬 Feedback & Contributions
+I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/kangojs).
+
+## ❤️ Credits
 I used [this article](https://nehalist.io/routing-with-typescript-decorators) for some initial guidance and
 inspiration on how to implement decorator based routing in typescript.
+
+## 📝 License
+This project is licensed under the terms of the [MIT license](https://choosealicense.com/licenses/mit/).
