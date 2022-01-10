@@ -1,10 +1,10 @@
 {
-  "name": "kango.js",
-  "version": "0.1.1",
+  "name": "@kangojs/kangojs",
+  "version": "0.2.0",
   "description": "An ExpressJS framework to make writing typescript express apps quicker and easier.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
-  "homepage": "https://github.com/Ben-Ryder/kango.js",
-  "bugs": "https://github.com/Ben-Ryder/kango.js/issues",
+  "homepage": "https://github.com/kangojs/kangojs",
+  "bugs": "https://github.com/kangojs/kangojs/issues",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {

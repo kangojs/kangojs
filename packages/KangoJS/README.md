@@ -1,13 +1,13 @@
 <div align="center">
-<h1>kango.js</h1>
-<p>An <a href="https://expressjs.com/">ExpressJS</a> framework to make writing typescript express apps quicker and easier.</p>
+<h1>KangoJS</h1>
+<p>An ExpressJS framework to make writing typescript express apps quicker and easier.</p>
 
 <div>
-  <a href="https://www.npmjs.com/package/kango.js" target="_blank">
-    <img src="https://img.shields.io/npm/v/kango.js?style=flat-square" alt="NPM Version" />
+  <a href="https://www.npmjs.com/package/@kangojs/kangojs" target="_blank">
+    <img src="https://img.shields.io/npm/v/@kangojs/kangojs?style=flat-square" alt="NPM Version" />
   </a>
   <a href="https://choosealicense.com/licenses/mit/" target="_blank">
-    <img src="https://img.shields.io/npm/l/kango.js?style=flat-square" alt="MIT License" />
+    <img src="https://img.shields.io/npm/l/@kangojs/kangojs?style=flat-square" alt="MIT License" />
   </a>
 </div>
 </div>
@@ -22,7 +22,7 @@ functions yourself which gives you the freedom to use any implementation you wis
 ## Getting Started
 Install the npm package:
 ```shell
-npm install kango.js
+npm install @kangojs/kangojs
 ```
 
 To use decorators in typescript you will have to add the following settings to your `tsconfig.json` file:
@@ -32,10 +32,10 @@ To use decorators in typescript you will have to add the following settings to y
 ```
 
 ## Usage
-To use kango.js you can bootstrap it with your Express app like so:
+To use KangoJS you can bootstrap it with your Express app like so:
 ```ts
 import express from 'express';
-import { KangoJS } from 'kango.js';
+import { KangoJS } from '@kangojs/kangojs';
 
 const app = express();
 
@@ -49,28 +49,28 @@ The following options are available when instantiating `KangoJS`:
 
 | Property              | Type                                                                                     | Description                                                                                                                                       | Example                         |
 |-----------------------|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
-| `controllerFilesGlob` | `string`                                                                                 | A [glob pattern](https://github.com/isaacs/node-glob#glob-primer) relative to the project root that tells kango.js where to look for controllers. | `"src/modules/*.controller.ts"` |
-| `globalPrefix`        | `string`                                                                                 | An optional string that will prefix all routes that kango.js generates.                                                                           | `"/api/v1"`                     |
+| `controllerFilesGlob` | `string`                                                                                 | A [glob pattern](https://github.com/isaacs/node-glob#glob-primer) relative to the project root that tells KangoJS where to look for controllers. | `"src/modules/*.controller.ts"` |
+| `globalPrefix`        | `string`                                                                                 | An optional string that will prefix all routes that KangoJS generates.                                                                           | `"/api/v1"`                     |
 | `authFunction`        | `(req: Request, res: Response, next: NextFunction) => Promise<any>`                      | An optional middleware function that will be used when a route requires authentication.                                                           | see examples below              |
 | `validateBody`        | `(bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>`  | An optional function that will be used for request body validation if you add the `bodyShape` property to a route.                                | see examples below              |
 | `validateQuery`       | `(queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>` | An optional function that will be used for request query validation if you add the `queryShape` property to a route.                              | see examples below              |
 
 
 ### Project Structure Assumptions 
-kango.js has been designed with the assumption that your app will be split into separate modules/components
+KangoJS has been designed with the assumption that your app will be split into separate modules/components
 where each module/component has its own controller for handling Express routing.  
 This is based on the [module structure of NestJS](https://docs.nestjs.com/modules) and the generally agreed upon [best practise of Node.js app structure](https://github.com/goldbergyoni/nodebestpractices#1-project-structure-practices)
 where applications encapsulate functionality into separate modules/components and use layers such as controllers and services to separate business logic from web request logic.
 
-That being said, the only hard assumption kango.js enforces is the use of controllers that have routes defined as decorated methods.
+That being said, the only hard assumption KangoJS enforces is the use of controllers that have routes defined as decorated methods.
 
 ### Controllers
-Controllers are classes that encapsulate ExpressJS request & response logic. kango.js attempts to load controllers from all files
+Controllers are classes that encapsulate ExpressJS request & response logic. KangoJS attempts to load controllers from all files
 that match the `controllerFilesGlob` passed in the options.  
 You mark a class as a controller with the `@Controller` decorator and pass what path the controller will manage, for example:
 
 ```typescript
-import { Controller } from 'kango.js';
+import { Controller } from '@kangojs/kangojs';
 
 @Controller('/users')
 class UserController {
@@ -86,7 +86,7 @@ export default UserController;
 Routes are added to controllers by adding the `@Route` decorator to methods. For example:
 
 ```typescript
-import { Controller, Route, HTTPMethods } from 'kango.js';
+import { Controller, Route, HTTPMethods } from '@kangojs/kangojs';
 import { Request, Response, NextFunction } from 'express';
 
 @Controller('/users')
@@ -128,7 +128,7 @@ The following options are available for the `@Route` decorator:
 | `queryShape`   | `any`                                 | An optional property where you can pass what shape you expect the request query to have (requires the `validateQuery` function to be set).                                         |
 
 ## Feedback & Contributions
-I'm open to feedback and contributions. Feel free to raise an issue or suggest improvements and features on [GitHub](https://github.com/Ben-Ryder/kango.js).
+I'm open to feedback and contributions. Feel free to raise an issue or suggest improvements and features on [GitHub](https://github.com/kangojs/kangojs).
 
 ## License
 This project is licensed under the terms of the [MIT license](https://choosealicense.com/licenses/mit/).
