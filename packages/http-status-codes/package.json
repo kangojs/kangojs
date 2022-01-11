@@ -1,0 +1,32 @@
+{
+  "name": "@kangojs/http-status-codes",
+  "version": "1.0.0",
+  "description": "Provides an enum for HTTP status codes.",
+  "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
+  "homepage": "https://github.com/kangojs/http-status-codes",
+  "bugs": "https://github.com/kangojs/http-status-codes/issues",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "husky install",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [
+    "kangojs",
+    "http-status-codes",
+    "status-codes",
+    "http",
+    "status"
+  ],
+  "devDependencies": {
+    "@commitlint/cli": "^16.0.2",
+    "@commitlint/config-conventional": "^16.0.0",
+    "husky": "^7.0.4",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {}
+}
