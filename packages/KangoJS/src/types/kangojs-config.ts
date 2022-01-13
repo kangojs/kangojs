@@ -14,7 +14,7 @@ export interface KangoJSConfig {
 export interface KangoJSOptions {
   controllerFilesGlob: string;
   globalPrefix?: string | null;
-  authFunction?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
-  validateBody?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-  validateQuery?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
+  authValidator?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
+  bodyValidator?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
+  queryValidator?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
 }

@@ -57,9 +57,9 @@ The following options are available when instantiating `KangoJS`:
 |-----------------------|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
 | `controllerFilesGlob` | `string`                                                                                 | A [glob pattern](https://github.com/isaacs/node-glob#glob-primer) relative to the project root that tells KangoJS where to look for controllers. | `"src/modules/*.controller.ts"` |
 | `globalPrefix`        | `string`                                                                                 | An optional string that will prefix all routes that KangoJS generates.                                                                           | `"/api/v1"`                     |
-| `authFunction`        | `(req: Request, res: Response, next: NextFunction) => Promise<any>`                      | An optional middleware function that will be used when a route requires authentication.                                                           | see examples below              |
-| `validateBody`        | `(bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>`  | An optional function that will be used for request body validation if you add the `bodyShape` property to a route.                                | see examples below              |
-| `validateQuery`       | `(queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>` | An optional function that will be used for request query validation if you add the `queryShape` property to a route.                              | see examples below              |
+| `authValidator`        | `(req: Request, res: Response, next: NextFunction) => Promise<any>`                      | An optional middleware function that will be used when a route requires authentication.                                                           | see examples below              |
+| `bodyValidator`        | `(bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>`  | An optional function that will be used for request body validation if you add the `bodyShape` property to a route.                                | An example implementation can be found at [`@kangojs/class-validation`]()              |
+| `queryValidator`       | `(queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>` | An optional function that will be used for request query validation if you add the `queryShape` property to a route.                              | see examples below              |
 
 
 ### Project Structure Assumptions
@@ -129,18 +129,16 @@ The following options are available for the `@Route` decorator:
 |----------------|---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `path`         | `string`                              | An optional string to add to the end of the controllers main path.                                                                                                                 |
 | `httpMethod`   | one of the `HTTPMethods` enum values. | Defines what HTTP method the route uses.                                                                                                                                           |
-| `requiresAuth` | `boolean`                             | Defines if the route requires authentication (requires the `authFunction` to be set). **For safety you must explicitly set `requiresAuth:false` to disable route authentication.** |
-| `bodyShape`    | `any`                                 | An optional property where you can pass what shape you expect the request body to have (requires the `validateBody` function to be set).                                           |
-| `queryShape`   | `any`                                 | An optional property where you can pass what shape you expect the request query to have (requires the `validateQuery` function to be set).                                         |
+| `requiresAuth` | `boolean`                             | Defines if the route requires authentication (requires the `authValidator` to be set). **For safety you must explicitly set `requiresAuth:false` to disable route authentication.** |
+| `bodyShape`    | `any`                                 | An optional property where you can pass what shape you expect the request body to have (requires the `bodyValidator` function to be set).                                           |
+| `queryShape`   | `any`                                 | An optional property where you can pass what shape you expect the request query to have (requires the `queryValidator` function to be set).                                         |
 
 ## 🧰 Other KangoJS Packages
-**!! PACKAGES COMING SOON !!**
-
 `@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [GitHub](https://github.com/kangojs/kangojs)) is the core framework that you can use to manage controllers and routes.
 
 There are also a number of other KangoJS packages available that offer additional functionality, most can be used with or without the core framework:
-- `@kangojs/class-dtos` ([npm](https://www.npmjs.com/package/@kangojs/class-dtos), [GitHub](https://github.com/kangojs/class-dtos)) - Allows you to create class DTOs (via class-transformer & class-validator) to parse and validate request data.
-- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [GitHub](https://github.com/kangojs/express-query-string)) - Allows you to replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
+- `@kangojs/class-validation` ([npm](https://www.npmjs.com/package/@kangojs/class-validation), [GitHub](https://github.com/kangojs/class-validation)) - Create class DTOs to parse and validate request data using class-transformer & class-validator..
+- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [GitHub](https://github.com/kangojs/express-query-string)) - Replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
 - `@kangojs/express-common-middleware` ([npm](https://www.npmjs.com/package/@kangojs/express-common-middleware), [GitHub](https://github.com/kangojs/express-common-middleware)) - Quickly include common Express middleware. Includes `express.json()`, `express.urlencoded()`, [cors](https://www.npmjs.com/package/cors) and [cookie-parser](https://www.npmjs.com/package/cookie-parser).
 
 ## 💬 Feedback & Contributions

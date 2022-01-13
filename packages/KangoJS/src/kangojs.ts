@@ -13,9 +13,9 @@ import { RouteMetadata } from './types/route-metadata';
  */
 class KangoJS {
 	private readonly router: Router;
-	private authFunction?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private validateBody?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private validateQuery?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
+	private authValidator?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
+	private bodyValidator?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
+	private queryValidator?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
 	private config: KangoJSConfig;
 
 	/**
@@ -31,14 +31,14 @@ class KangoJS {
 			globalPrefix: options.globalPrefix ? options.globalPrefix : null,
 		}
 
-		if (options.authFunction) {
-			this.authFunction = options.authFunction;
+		if (options.authValidator) {
+			this.authValidator = options.authValidator;
 		}
-		if (options.validateBody) {
-			this.validateBody = options.validateBody;
+		if (options.bodyValidator) {
+			this.bodyValidator = options.bodyValidator;
 		}
-		if (options.validateQuery) {
-			this.validateQuery = options.validateQuery;
+		if (options.queryValidator) {
+			this.queryValidator = options.queryValidator;
 		}
 	}
 
@@ -89,35 +89,35 @@ class KangoJS {
 			let routeMiddleware = [];
 
 			if (route.routeDefinition.bodyShape) {
-				if (this.validateBody) {
+				if (this.bodyValidator) {
 					routeMiddleware.push(
-						this.validateBody(route.routeDefinition.bodyShape)
+						this.bodyValidator(route.routeDefinition.bodyShape)
 					)
 				}
 				else {
-					throw new Error(`No validateBody function registered but validation is required by ${routePath}`);
+					throw new Error(`No bodyValidator function registered but validation is required by ${routePath}`);
 				}
 			}
 
 			if (route.routeDefinition.queryShape) {
-				if (this.validateQuery) {
+				if (this.queryValidator) {
 					routeMiddleware.push(
-						this.validateQuery(route.routeDefinition.queryShape)
+						this.queryValidator(route.routeDefinition.queryShape)
 					)
 				}
 				else {
-					throw new Error(`No validateQuery function registered but validation is required by ${routePath}`);
+					throw new Error(`No queryValidator function registered but validation is required by ${routePath}`);
 				}
 			}
 
 			// Routes must explicitly set authRequired=false to disable route protection.
 			// This ensures no route is accidentally left unprotected.
 			if (!!route.routeDefinition.authRequired) {
-				if (this.authFunction) {
-					routeMiddleware.push(this.authFunction)
+				if (this.authValidator) {
+					routeMiddleware.push(this.authValidator)
 				}
 				else {
-					throw new Error(`No authFunction registered but ${routePath} requires it.`);
+					throw new Error(`No authValidator registered but ${routePath} requires it.`);
 				}
 			}
 
