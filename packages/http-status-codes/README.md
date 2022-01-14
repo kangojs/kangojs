@@ -40,10 +40,7 @@ console.log(HTTPStatusCodes.SERVICE_UNAVAILABLE)
 **NOTE:** This is purposefully not an exhaustive list at the moment, it's just the ones I've found myself actually needing.
 
 ## 🧰 Other KangoJS Packages
-- `@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [GitHub](https://github.com/kangojs/kangojs)) - The core framework that you can use to make Express app development quicker and easier.
-- `@kangojs/class-dtos` ([npm](https://www.npmjs.com/package/@kangojs/class-dtos), [GitHub](https://github.com/kangojs/class-dtos)) - Create class DTOs to parse and validate request data using class-transformer & class-validator.
-- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [GitHub](https://github.com/kangojs/express-query-string)) - Replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
-- `@kangojs/express-common-middleware` ([npm](https://www.npmjs.com/package/@kangojs/express-common-middleware), [GitHub](https://github.com/kangojs/express-common-middleware)) - Quickly include common Express middleware. Includes `express.json()`, `express.urlencoded()`, [cors](https://www.npmjs.com/package/cors) and [cookie-parser](https://www.npmjs.com/package/cookie-parser).
+For all available KangoJS packages [check out this list](https://github.com/kangojs/kangojs#-other-kangojs-packages).
 
 ## 💬 Feedback & Contributions
 I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/http-status-codes).
