@@ -136,9 +136,7 @@ When validation fails the default behaviour is to return a `400` response with t
 ```
 
 ## 🧰 Other KangoJS Packages
-- `@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [GitHub](https://github.com/kangojs/kangojs)) - The core framework that you can use to manage controllers and routes.
-- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [GitHub](https://github.com/kangojs/express-query-string)) - Allows you to replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
-- `@kangojs/express-common-middleware` ([npm](https://www.npmjs.com/package/@kangojs/express-common-middleware), [GitHub](https://github.com/kangojs/express-common-middleware)) - Quickly include common Express middleware. Includes `express.json()`, `express.urlencoded()`, [cors](https://www.npmjs.com/package/cors) and [cookie-parser](https://www.npmjs.com/package/cookie-parser).
+For all available KangoJS packages [check out this list](https://github.com/kangojs/kangojs#-other-kangojs-packages).
 
 ## 💬 Feedback & Contributions
 I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/class-validation).
