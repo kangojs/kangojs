@@ -33,8 +33,8 @@ Documentation on how to use the package...
 Add/delete packages from the list here as appropriate...
 
 - `@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [GitHub](https://github.com/kangojs/kangojs)) - The core framework that you can use to manage controllers and routes.
-- `@kangojs/class-dtos` ([npm](https://www.npmjs.com/package/@kangojs/class-dtos), [GitHub](https://github.com/kangojs/class-dtos)) - Allows you to create class DTOs (via class-transformer & class-validator) to parse and validate request data.
-- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [GitHub](https://github.com/kangojs/express-query-string)) - Allows you to replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
+- `@kangojs/class-validation` ([npm](https://www.npmjs.com/package/@kangojs/class-validation), [GitHub](https://github.com/kangojs/class-validation)) - Validate and transform request data using classes with class-transformer and class-validator.
+- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [GitHub](https://github.com/kangojs/express-query-string)) - Replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
 - `@kangojs/express-common-middleware` ([npm](https://www.npmjs.com/package/@kangojs/express-common-middleware), [GitHub](https://github.com/kangojs/express-common-middleware)) - Quickly include common Express middleware. Includes `express.json()`, `express.urlencoded()`, [cors](https://www.npmjs.com/package/cors) and [cookie-parser](https://www.npmjs.com/package/cookie-parser).
 
 ## 💬 Feedback & Contributions
