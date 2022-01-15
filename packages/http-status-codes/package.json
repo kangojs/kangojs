@@ -9,7 +9,6 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "prepare": "husky install",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -23,9 +22,6 @@
     "status"
   ],
   "devDependencies": {
-    "@commitlint/cli": "^16.0.2",
-    "@commitlint/config-conventional": "^16.0.0",
-    "husky": "^7.0.4",
     "typescript": "^4.5.2"
   },
   "dependencies": {}

@@ -6,6 +6,10 @@ labels: bug
 assignees: Ben-Ryder
 ---
 
+**Package Information**
+- Name: kangojs, class-validation, http-status-codes or package-template
+- Version (as installed from npm):
+
 **Describe the bug**
 A clear and concise description of what the bug/issue is.
 
