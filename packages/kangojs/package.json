@@ -29,5 +29,8 @@
     "express": "^4.17.1",
     "glob-promise": "^4.2.2",
     "reflect-metadata": "^0.1.13"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
