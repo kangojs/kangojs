@@ -33,6 +33,7 @@ Available types are as follows:
 - `revert` - a change that reverts previous work
 - `style` - changes that only affect code style (linting fixes etc)
 - `test` - changes to tests
+- `release` - a special type used when doing a package release
 
 When working on an issue this should be referenced in the footer, for example:
 
