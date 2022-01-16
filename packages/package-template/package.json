@@ -1,10 +1,11 @@
 {
-  "name": "@kangojs/<package-name>",
-  "version": "0.0.0",
+  "name": "@kangojs/package-template",
+  "private": true,
+  "version": "1.0.0",
   "description": "Add a description here...",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
-  "homepage": "https://github.com/kangojs/<package-name>",
-  "bugs": "https://github.com/kangojs/<package-name>/issues",
+  "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/package-template",
+  "bugs": "https://github.com/kangojs/kangojs/issues",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
