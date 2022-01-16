@@ -1,6 +1,9 @@
 # NODE
 node_modules
 
+# Lerna
+lerna-debug.log
+
 # IDEs
 .idea
 
