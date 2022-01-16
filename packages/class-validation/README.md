@@ -139,7 +139,7 @@ When validation fails the default behaviour is to return a `400` response with t
 For all available KangoJS packages [check out this list](https://github.com/kangojs/kangojs#-other-kangojs-packages).
 
 ## 💬 Feedback & Contributions
-I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/class-validation).
+I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/kangojs/issues).
 
 ## 📝 License
 This project is licensed under the terms of the [MIT license](https://choosealicense.com/licenses/mit/).
