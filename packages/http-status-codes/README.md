@@ -43,7 +43,7 @@ console.log(HTTPStatusCodes.SERVICE_UNAVAILABLE)
 For all available KangoJS packages [check out this list](https://github.com/kangojs/kangojs#-other-kangojs-packages).
 
 ## 💬 Feedback & Contributions
-I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/http-status-codes).
+I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/kangojs/issues).
 
 ## 📝 License
 This project is licensed under the terms of the [MIT license](https://choosealicense.com/licenses/mit/).

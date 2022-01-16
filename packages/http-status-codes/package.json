@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Provides an enum for HTTP status codes.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
-  "homepage": "https://github.com/kangojs/http-status-codes",
-  "bugs": "https://github.com/kangojs/http-status-codes/issues",
+  "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/http-status-codes",
+  "bugs": "https://github.com/kangojs/kangojs/issues",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
