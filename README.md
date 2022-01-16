@@ -136,6 +136,9 @@ The following options are available for the `@Route` decorator:
 | `bodyShape`    | `any`                                 | An optional property where you can pass what shape you expect the request body to have (requires the `bodyValidator` function to be set).                                           |
 | `queryShape`   | `any`                                 | An optional property where you can pass what shape you expect the request query to have (requires the `queryValidator` function to be set).                                         |
 
+## 📚 Documentation
+Additional documentation for the project can be found [here](https://github.com/kangojs/kangojs/tree/main/docs).
+
 ## 🧰 Other KangoJS Packages
 `@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/kangojs)) is the core package that provides the base functionality for managing controllers and routes.
 
