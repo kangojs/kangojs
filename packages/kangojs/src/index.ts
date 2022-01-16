@@ -1,7 +1,6 @@
 export * from './kangojs';
 
 export * from './utils/http-methods';
-export * from './utils/http-status-codes';
 
 export * from './decorators/metadata-keys'
 export * from './decorators/controller.decorator';
