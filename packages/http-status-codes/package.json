@@ -1,6 +1,6 @@
 {
   "name": "@kangojs/http-status-codes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides an enum for HTTP status codes.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
   "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/http-status-codes",
@@ -24,7 +24,6 @@
   "devDependencies": {
     "typescript": "^4.5.2"
   },
-  "dependencies": {},
   "publishConfig": {
     "access": "public"
   }
