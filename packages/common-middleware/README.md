@@ -14,7 +14,10 @@
 
 ## 🤔 About
 There are common middleware functions and packages that are used in a lot of Express projects.  
-This package bundles those all together into one central place to make it quicker and easier to include them.
+This package bundles all those together into one central place to make it quicker and easier to include them.
+
+While this package has been built mainly for use with [KangoJS](https://github.com/kangojs/kangojs), it's not
+doing anything other than creating & managing Express middleware, so it should work in any Express project.
 
 ## 💥 Features
 - Common Middleware
@@ -37,10 +40,13 @@ Install the npm package:
 npm install @kangojs/common-middleware
 ```
 
+`express` is listed as a peer dependency as it's assumed that you'll have this dependency in
+your project already.
+
 ## 👷 Usage
 
 ### Common Middleware
-Using common middleware in your app is as simple as calling the `useCommonMiddleware` function as shown below:
+Using the common middleware in your app is as simple as calling the `useCommonMiddleware` function as shown below:
 
 ```typescript
 import { useCommonMiddleware } from '@kangojs/common-middleware';
@@ -71,7 +77,7 @@ All configuration options are added to `config` as shown above and the available
 - `cors` - `CorsOptions` object to be passed to cors,
 - `cookieParser.options` - `CookieParseOptions` object to be passed to cookie-parser,
 - `cookieParser.secret` - `string | string[] | undefined` to be passed to cookie-parser
-- malformedRequest - [see below for details](#malformed-request-middleware)
+- `malformedRequest` - see below for details
 
 ### Malformed Request Middleware
 Part of the default behaviour of `useCommonMiddleware` is to add an error handler for malformed requests.
@@ -87,7 +93,7 @@ If a request has malformed data this handler will return a response with a `400`
 You can customise the message that's shown by passing options to `useCommonMiddleware` like so:
 
 ```typescript
-import { useNotFoundMiddleware } from '@kangojs/common-middleware';
+import { useCommonMiddleware } from '@kangojs/common-middleware';
 
 const options = {
   config: {
@@ -97,7 +103,7 @@ const options = {
   }
 }
 
-useNotFoundMiddleware(app, options);
+useCommonMiddleware(app, options);
 ```
 
 ### Route Not Found Middleware
@@ -110,7 +116,7 @@ import { useNotFoundMiddleware } from '@kangojs/common-middleware';
 useNotFoundMiddleware(app);
 ```
 
-This will return a response with a `404` status code and the following body data:
+When a request doesn't have any matching routes, a `404` response is returned with the following body data:
 
 ```json
 {
@@ -132,7 +138,7 @@ useNotFoundMiddleware(app, options);
 ```
 
 ### Disabling Middleware
-If you want to fully disable a particular middleware you can set its value to `true` in the `disable` config property, for example:
+If you want to fully disable a particular middleware you can set its corresponding property to `true` in the `disable` config object, for example:
 
 ```typescript
 import { useCommonMiddleware } from '@kangojs/common-middleware';

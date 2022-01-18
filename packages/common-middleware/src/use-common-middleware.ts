@@ -7,6 +7,12 @@ import { gnuTerryPratchett } from './middleware/gnu-terry-pratchett';
 import { CommonMiddlewareOptions } from './types/common-middleware-options';
 import { useMalformedRequestMiddleware } from './middleware/malformed-requests';
 
+/**
+ * A function to add common middleware to your Express app.
+ *
+ * @param app - An Express application
+ * @param options - options to customise the functionality
+ */
 export async function useCommonMiddleware(app: Application, options: CommonMiddlewareOptions = {}) {
   // JSON Parsing
   if (!options?.disable?.json) {

@@ -3,6 +3,9 @@ import { CorsOptions } from 'cors';
 import { CookieParseOptions } from 'cookie-parser';
 import { MalformedRequestOptions } from './malformed-request-options';
 
+/**
+ * Customisation options for the useCommonMiddleware function.
+ */
 export interface CommonMiddlewareOptions {
   disable?: {
     json?: boolean,

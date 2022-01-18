@@ -3,7 +3,7 @@ import { HTTPStatusCodes } from '@kangojs/http-status-codes';
 import { MalformedRequestOptions } from '../types/malformed-request-options';
 
 /**
- * A simple middleware to return a 400 response when an error occurs
+ * A simple middleware to return a 400 response when an error occurs.
  */
 export function useMalformedRequestMiddleware(app: Application, options?: MalformedRequestOptions) {
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
