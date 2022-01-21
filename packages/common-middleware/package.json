@@ -1,6 +1,6 @@
 {
   "name": "@kangojs/common-middleware",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Quickly include common Express middleware in your project.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
   "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/common-middleware",
