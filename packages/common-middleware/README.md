@@ -125,13 +125,21 @@ When a request doesn't have any matching routes, a `404` response is returned wi
 }
 ```
 
-You can customise the message that's shown by passing options to `useNotFoundMiddleware` like so:
+You can customise the behaviour of `useNotFoundMiddleware` by passing any of these options:
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `path` | `string` | Used to specific a path for the middleware  |
+| `message` | `string` | Set a custom response message |
+
+Example use of these options:
 
 ```typescript
 import { useNotFoundMiddleware } from '@kangojs/common-middleware';
 
 const options = {
-  message: "There's nothing here... we even searched between the sofa cushions."
+  path: "/api/*",
+  message: "That API route does not exist."
 }
 
 useNotFoundMiddleware(app, options);
