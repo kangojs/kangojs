@@ -142,11 +142,11 @@ Additional documentation for the project can be found [here](https://github.com/
 ## 🧰 Other KangoJS Packages
 `@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/kangojs)) is the core package that provides the base functionality for managing controllers and routes.
 
-There are also a number of other KangoJS packages available that offer additional functionality, most can be used with or without the core framework:
+There are also a number of other KangoJS packages available that offer additional functionality:
 - `@kangojs/class-validation` ([npm](https://www.npmjs.com/package/@kangojs/class-validation), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/class-validation)) - Validate and transform request data using classes with class-transformer and class-validator.
-- `@kangojs/http-status-codes` ([npm](https://www.npmjs.com/package/@kangojs/http-status-codes), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/http-status-codes)) - Provides a simple enum for HTTP status codes.
-- `@kangojs/express-query-string` ([npm](https://www.npmjs.com/package/@kangojs/express-query-string), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/express-query-string)) - Replace the default Express query string parser with [query-string](https://www.npmjs.com/package/query-string).
 - `@kangojs/common-middleware` ([npm](https://www.npmjs.com/package/@kangojs/common-middleware), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/common-middleware)) - Quickly include common Express middleware. Includes `express.json()`, `express.urlencoded()`, [cors](https://www.npmjs.com/package/cors) and [cookie-parser](https://www.npmjs.com/package/cookie-parser).
+- `@kangojs/http-status-codes` ([npm](https://www.npmjs.com/package/@kangojs/http-status-codes), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/http-status-codes)) - Provides a simple enum for HTTP status codes.
+- `@kangojs/serve-spa` ([npm](https://www.npmjs.com/package/@kangojs/serve-spa), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/serve-spa)) - Serve single page applications such as React from your Express app.
 
 ## 💬 Feedback & Contributions
 I'm open to feedback and contributions. Feel free to [raise an issue or suggest improvements and features](https://github.com/kangojs/kangojs).
