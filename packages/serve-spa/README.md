@@ -42,7 +42,7 @@ useServeSPA(app, options)
 If your app's build files can't be found then an error message will be returned instead. The default is as follows:
 
 ```
-There has been an unexpected error while loading this page. Please try again later.
+There has been an unexpected error loading this page. Please try again later.
 ```
 
 You can customise the functionality of `useServeSPA` by passing in options:
