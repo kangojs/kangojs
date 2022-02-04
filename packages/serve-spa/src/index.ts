@@ -1,4 +1,4 @@
-import { join, resolve } from 'path';
+import { resolve } from 'path';
 import { Application, Request, Response, static as serveStatic } from 'express';
 
 import { UseServeSPAOptions } from "./types/use-serve-spa-options";
@@ -13,7 +13,7 @@ import { handleError } from './handle-error';
  */
 export function useServeSPA(app: Application, options: UseServeSPAOptions) {
     // Serve static files from the app's folder.
-    app.use(options.baseRoute || '/', serveStatic(join(__dirname, options.folderPath)));
+    app.use(options.baseRoute || '/', serveStatic(options.folderPath));
 
     // Process the route that the main middleware will be used on.
     let serveRoute;
@@ -28,7 +28,7 @@ export function useServeSPA(app: Application, options: UseServeSPAOptions) {
     app.get(serveRoute, async (req: Request, res: Response) => {
         try {
             return res.sendFile(
-              resolve(__dirname, options.folderPath , options.serveFile || 'index.html'),
+              resolve(options.folderPath , options.serveFile || 'index.html'),
               async (error) => {
                   if (error !== undefined) {
                       await handleError(options, error, res);
