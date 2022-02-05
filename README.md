@@ -45,15 +45,22 @@ To use KangoJS you can bootstrap it with your Express app like so:
 ```ts
 import express from 'express';
 import { KangoJS } from '@kangojs/kangojs';
+import { join } from 'fs';
 
 const app = express();
 
 const kangoJS = new KangoJS({
-  controllerFilesGlob: "src/modules/*.controller.ts",
+  controllerFilesGlob: join(__dirname, 'src/modules/**/*.controller.{ts,js}'),
   globalPrefix: "/api/v1",
 });
 await kangoJS.boostrap(app);
 ```
+
+**⚠️ IMPORTANT NOTE:** You must end `controllerFilesGlob` with `.{ts,js}` to ensure that KangoJS works 
+both when running your app with ts-node and after you've compiled it to JS. See issue [#2](https://github.com/kangojs/kangojs/issues/2) for details.
+
+### Options
+
 The following options are available when instantiating `KangoJS`:
 
 | Property              | Type                                                                                     | Description                                                                                                                                      | Example                                                                                                                                          |
