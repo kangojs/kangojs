@@ -1,6 +1,6 @@
 {
   "name": "@kangojs/class-validation",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Validate and transform request data using classes in KangoJS.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
   "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/class-validation",
@@ -14,7 +14,13 @@
   "files": [
     "dist/**/*"
   ],
-  "keywords": [],
+  "keywords": [
+    "kangojs",
+    "class-transformer",
+    "class-validator",
+    "middlware",
+    "request validation"
+  ],
   "dependencies": {
     "@kangojs/http-status-codes": "^1.0.1"
   },
