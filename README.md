@@ -40,6 +40,9 @@ To use decorators in typescript you will have to add the following settings to y
 "experimentalDecorators": true,
 ```
 
+**⚠️ Express is a peer dependency:** As KangoJS primarily acts as a wrapper around Express, Express is kept as a peer dependency
+so you can manage and update it yourself independent of KangoJS.
+
 ## 👷 Usage
 To use KangoJS you can bootstrap it with your Express app like so:
 ```ts
