@@ -25,7 +25,7 @@ export function createBodyValidator(options?: CreateValidatorOptions) {
         return async function validateBodyMiddleware(req: RequestWithDto, res: Response, next: NextFunction) {
             const result = await validator(classDto, req.body);
             if (result.passed) {
-                // Attach any processed DTO object to to the request for use later.
+                // Attach any processed DTO object to the request for use later.
                 if (result.dto) {
                     req.bodyDto = result.dto;
                 }
@@ -66,9 +66,9 @@ export function createQueryValidator(options?: CreateValidatorOptions) {
         return async function validateQueryMiddleware(req: RequestWithDto, res: Response, next: NextFunction) {
             const result = await validator(classDto, req.query);
             if (result.passed) {
-                // Attach any processed DTO object to to the request for use later.
+                // Attach any processed DTO object to the request for use later.
                 if (result.dto) {
-                    req.bodyDto = result.dto;
+                    req.queryDto = result.dto;
                 }
 
                 return next();
