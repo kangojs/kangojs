@@ -8,4 +8,4 @@ export * from './decorators/route.decorator';
 
 export * from './types/route-definition';
 export * from './types/route-metadata';
-export * from './types/kangojs-config';
+export * from './types/kangojs-options';

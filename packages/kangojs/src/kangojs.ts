@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { Application, Router, Request, Response, NextFunction } from 'express';
 import glob from 'glob-promise';
 
-import { KangoJSConfig, KangoJSOptions } from './types/kangojs-config';
+import { KangoJSOptions } from './types/kangojs-options';
 import { MetadataKeys } from './decorators/metadata-keys';
 import { HTTPMethods } from './utils/http-methods';
 import { RouteMetadata } from './types/route-metadata';
@@ -13,10 +13,12 @@ import { RouteMetadata } from './types/route-metadata';
  */
 class KangoJS {
 	private readonly router: Router;
-	private authValidator?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private bodyValidator?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private queryValidator?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private config: KangoJSConfig;
+	private readonly controllerFilesGlob?: string;
+	private readonly controllers?: Object[];
+	private readonly globalPrefix?: string;
+	private readonly authValidator?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
+	private readonly bodyValidator?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
+	private readonly queryValidator?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
 
 	/**
 	 * The object constructor.
@@ -25,21 +27,12 @@ class KangoJS {
 	 */
 	constructor(options: KangoJSOptions) {
 		this.router = Router();
-
-		this.config = {
-			controllerFilesGlob: options.controllerFilesGlob,
-			globalPrefix: options.globalPrefix ? options.globalPrefix : null,
-		}
-
-		if (options.authValidator) {
-			this.authValidator = options.authValidator;
-		}
-		if (options.bodyValidator) {
-			this.bodyValidator = options.bodyValidator;
-		}
-		if (options.queryValidator) {
-			this.queryValidator = options.queryValidator;
-		}
+		this.controllers = options.controllers || undefined;
+		this.controllerFilesGlob = options.controllerFilesGlob || undefined;
+		this.globalPrefix = options.globalPrefix || undefined;
+		this.authValidator = options.authValidator || undefined;
+		this.bodyValidator = options.bodyValidator || undefined;
+		this.queryValidator = options.queryValidator || undefined;
 	}
 
 	/**
@@ -48,25 +41,58 @@ class KangoJS {
 	 * @param app - The Express app instance to add routes to.
 	 */
 	async boostrap(app: Application) {
-		const controllerFiles = await glob(
-			this.config.controllerFilesGlob,
-			{absolute: true} // Make file paths absolute to ensure imports don't fail when used in a project.
-		);
-
-		for (let index = 0; index < controllerFiles.length; index++) {
-			let controller = await import(controllerFiles[index])
-			await this.registerController(controller.default);
+		let controllers: Object[];
+		if (this.controllerFilesGlob) {
+			controllers = await KangoJS._getControllersFromFiles(this.controllerFilesGlob);
+		}
+		else if (this.controllers) {
+			controllers = this.controllers;
+		}
+		else {
+			controllers = [];
 		}
 
-		if (this.config.globalPrefix) {
-			app.use(this.config.globalPrefix, this.router);
+		for (let controller of controllers) {
+			await this.processController(controller);
+		}
+
+		if (this.globalPrefix) {
+			app.use(this.globalPrefix, this.router);
 		}
 		else {
 			app.use(this.router);
 		}
 	}
 
-	async registerController(controller: any) {
+	/**
+	 * Search and import controller classes from source files.
+	 *
+	 * @param fileGlob - The glob used to search for controller files.
+	 * @private
+	 */
+	private static async _getControllersFromFiles(fileGlob: string): Promise<Object[]> {
+		const controllerFiles = await glob(
+			fileGlob,
+			{absolute: true} // Make file paths absolute to ensure imports don't fail when used in a project.
+		);
+
+		const controllers = [];
+		for (let index = 0; index < controllerFiles.length; index++) {
+			let controller = await import(controllerFiles[index])
+			controllers.push(controller.default);
+		}
+
+		return controllers;
+	}
+
+	/**
+	 * Process a given controller class.
+	 * This primarily consists of setting up routing to the controller route methods.
+	 *
+	 * @param controller - A controller class
+	 * @private
+	 */
+	private async processController(controller: any) {
 		const controllerInstance = new controller();
 
 		// Setup controller routes.
