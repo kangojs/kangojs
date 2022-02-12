@@ -13,7 +13,7 @@ import { useMalformedRequestMiddleware } from './middleware/malformed-requests';
  * @param app - An Express application
  * @param options - options to customise the functionality
  */
-export async function useCommonMiddleware(app: Application, options: CommonMiddlewareOptions = {}) {
+export function useCommonMiddleware(app: Application, options: CommonMiddlewareOptions = {}) {
   // JSON Parsing
   if (!options?.disable?.json) {
     if (options?.config?.json) {
