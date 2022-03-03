@@ -1,6 +1,6 @@
 <div align="center">
 <h1>KangoJS</h1>
-<p>An Express framework to make writing typescript express apps quicker and easier.</p>
+<p>A typescript express framework to make writing apps quicker and easier.</p>
 
 <div>
   <a href="https://www.npmjs.com/package/@kangojs/kangojs" target="_blank">
