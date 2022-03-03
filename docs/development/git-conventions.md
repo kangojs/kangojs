@@ -19,8 +19,9 @@ When working on a package commits should be scoped to that package. Available pa
 - `kangojs`
 - `class-validation`
 - `http-status-codes`
-- `express-query-string`
 - `common-middleware`
+- `serve-spa`
+- `error-handler`
 
 Available types are as follows:
 - `build` - changes that affect the build system or external dependencies (npm, lerna etc)
