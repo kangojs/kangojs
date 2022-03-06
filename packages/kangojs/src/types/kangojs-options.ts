@@ -6,7 +6,7 @@ import { NextFunction, Request, Response } from 'express';
 export interface KangoJSOptions {
   controllerFilesGlob: string;
   globalPrefix?: string;
-  authValidator?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
-  bodyValidator?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-  queryValidator?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
+  authValidator?: (req: Request, res: Response, next: NextFunction) => any;
+  bodyValidator?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => any;
+  queryValidator?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => any;
 }
