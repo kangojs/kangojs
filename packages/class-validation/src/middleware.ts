@@ -90,3 +90,44 @@ export function createQueryValidator(options?: CreateValidatorOptions) {
         }
     }
 }
+
+/**
+ * Returns a validateParams function compatible with KangoJS's validation system.
+ * That returned function then contains the middleware function used to validate request URL params.
+ *
+ * @param options
+ */
+export function createParamsValidator(options?: CreateValidatorOptions) {
+    return function validateParams(classDto: any) {
+        const validator = createValidator(
+            options && options.classTransformerOptions ? options.classTransformerOptions : defaultClassTransformerOptions,
+            options && options.classValidatorOptions ? options.classValidatorOptions : defaultClassValidatorOptions,
+        );
+
+        return async function validateParamsMiddleware(req: RequestWithDto, res: Response, next: NextFunction) {
+            const result = await validator(classDto, req.params);
+            if (result.passed) {
+                // Attach any processed DTO object to the request for use later.
+                if (result.dto) {
+                    req.paramsDto = result.dto;
+                }
+
+                return next();
+            }
+            else {
+                if (options && options.errorHandler) {
+                    await options.errorHandler(result.error, res);
+                }
+                else {
+                    const errorReason = classValidatorErrorPrettier(result.error);
+
+                    return res.status(HTTPStatusCodes.BAD_REQUEST).send({
+                        statusCode: HTTPStatusCodes.BAD_REQUEST,
+                        message: 'The supplied URL parameters did not pass validation.',
+                        reason: errorReason ? errorReason : null,
+                    })
+                }
+            }
+        }
+    }
+}

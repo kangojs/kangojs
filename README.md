@@ -145,6 +145,7 @@ The following options are available for the `@Route` decorator:
 | `requiresAuth` | `boolean`                             | Defines if the route requires authentication (requires the `authValidator` to be set). **For safety you must explicitly set `requiresAuth:false` to disable route authentication.** |
 | `bodyShape`    | `any`                                 | An optional property where you can pass what shape you expect the request body to have (requires the `bodyValidator` function to be set).                                           |
 | `queryShape`   | `any`                                 | An optional property where you can pass what shape you expect the request query to have (requires the `queryValidator` function to be set).                                         |
+| `paramsShape`   | `any`                                 | An optional property where you can pass what shape you expect the request URL parameters to have (requires the `paramsValidator` function to be set).                                         |
 
 ## 📚 Documentation
 Additional documentation for the project can be found [here](https://github.com/kangojs/kangojs/tree/main/docs).
