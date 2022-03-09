@@ -1,6 +1,6 @@
 {
   "name": "@kangojs/error-handler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An error handler for Express.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
   "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/error-handler",
