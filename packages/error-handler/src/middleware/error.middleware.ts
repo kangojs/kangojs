@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Application, NextFunction, Request, Response } from 'express';
 import { ErrorHandler, ErrorHandlerConfig } from '../handlers/error-handler';
 
 export interface ErrorHandlerMiddlewareConfig {
@@ -8,10 +8,12 @@ export interface ErrorHandlerMiddlewareConfig {
 /**
  * A middleware to handle all thrown errors via the main error handler.
  */
-export function useErrorHandlerMiddleware(config: ErrorHandlerMiddlewareConfig) {
- const errorHandler = new ErrorHandler(config.errorHandlerConfig);
+export function useErrorHandlerMiddleware(app: Application, config: ErrorHandlerMiddlewareConfig) {
+    const errorHandler = new ErrorHandler(config.errorHandlerConfig);
 
-  return async function errorHandlerMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {
-    await errorHandler.handleError(err, res);
-  }
+    async function errorHandlerMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {
+        await errorHandler.handleError(err, res);
+    }
+
+    app.use(errorHandlerMiddleware);
 }
