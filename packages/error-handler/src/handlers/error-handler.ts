@@ -29,15 +29,15 @@ export class ErrorHandler {
     'UserError'
   ];
 
-  constructor(errorHandlerConfig: ErrorHandlerConfig) {
-    if (errorHandlerConfig.safeErrors) {
+  constructor(errorHandlerConfig?: ErrorHandlerConfig) {
+    if (errorHandlerConfig?.safeErrors) {
       this._safeErrors = this._safeErrors.concat(errorHandlerConfig.safeErrors);
     }
 
-    if (errorHandlerConfig.catchUncaughtException !== false) {
+    if (errorHandlerConfig?.catchUncaughtException !== false) {
       this.setupUncaughtExceptionListener();
     }
-    if (errorHandlerConfig.catchUnhandledRejection !== false) {
+    if (errorHandlerConfig?.catchUnhandledRejection !== false) {
       ErrorHandler.setupUnhandledRejectionListener();
     }
   }

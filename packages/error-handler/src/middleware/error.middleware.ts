@@ -8,8 +8,8 @@ export interface ErrorHandlerMiddlewareConfig {
 /**
  * A middleware to handle all thrown errors via the main error handler.
  */
-export function useErrorHandlerMiddleware(app: Application, config: ErrorHandlerMiddlewareConfig) {
-    const errorHandler = new ErrorHandler(config.errorHandlerConfig);
+export function useErrorHandlerMiddleware(app: Application, config?: ErrorHandlerMiddlewareConfig) {
+    const errorHandler = new ErrorHandler(config?.errorHandlerConfig);
 
     async function errorHandlerMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {
         await errorHandler.handleError(err, res);
