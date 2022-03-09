@@ -6,4 +6,5 @@ import { Request } from "express";
 export interface RequestWithDto extends Request {
     bodyDto?: any;
     queryDto?: any;
+    paramsDto?: any;
 }

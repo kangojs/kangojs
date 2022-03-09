@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 
-import { Application, Router, Request, Response, NextFunction } from 'express';
+import { Application, Router } from 'express';
 import glob from 'glob-promise';
 
-import { KangoJSOptions } from './types/kangojs-options';
+import { KangoJSOptions, MiddlewareFunction, ValidatorFunction } from './types/kangojs-options';
 import { MetadataKeys } from './decorators/metadata-keys';
 import { HTTPMethods } from './utils/http-methods';
 import { RouteMetadata } from './types/route-metadata';
@@ -13,11 +13,12 @@ import { RouteMetadata } from './types/route-metadata';
  */
 class KangoJS {
 	private readonly router: Router;
-	private controllerFilesGlob: string;
-	private globalPrefix?: string;
-	private readonly authValidator?: (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private readonly bodyValidator?: (bodyShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
-	private readonly queryValidator?: (queryShape: any) => (req: Request, res: Response, next: NextFunction) => Promise<any>;
+	private readonly controllerFilesGlob: string;
+	private readonly globalPrefix?: string;
+	private readonly authValidator?: MiddlewareFunction;
+	private readonly bodyValidator?: ValidatorFunction;
+	private readonly queryValidator?: ValidatorFunction;
+	private readonly paramsValidator?: ValidatorFunction;
 
 	/**
 	 * The object constructor.
@@ -31,6 +32,7 @@ class KangoJS {
 		this.authValidator = options.authValidator || undefined;
 		this.bodyValidator = options.bodyValidator || undefined;
 		this.queryValidator = options.queryValidator || undefined;
+		this.paramsValidator = options.paramsValidator || undefined;
 	}
 
 	/**
@@ -125,6 +127,17 @@ class KangoJS {
 				}
 				else {
 					throw new Error(`No queryValidator function registered but validation is required by ${routePath}`);
+				}
+			}
+
+			if (route.routeDefinition.paramsShape) {
+				if (this.paramsValidator) {
+					routeMiddleware.push(
+						this.paramsValidator(route.routeDefinition.paramsShape)
+					)
+				}
+				else {
+					throw new Error(`No paramsValidator function registered but validation is required by ${routePath}`);
 				}
 			}
 

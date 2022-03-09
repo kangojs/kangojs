@@ -21,7 +21,7 @@ While you could potentially use this package without KangoJS, it isn't 'official
 ## 💥 Features
 - Quickly integrate with KangoJS's validation system. Focus on writing project code not sorting request validation logic.
 - Incoming request data is automatically transformed and attached to the Express `req` object.
-- Use on both request body and query data.
+- Use on request body data, query parameters and URL parameters.
 
 ## 🚀 Getting Started
 Install the npm package:
@@ -42,7 +42,7 @@ When setting up KangoJS you can simply pass the results of `createBodyValidator`
 ```typescript
 import express from 'express';
 import { KangoJS } from '@kangojs/kangojs';
-import { createBodyValidator, createQueryValidator } from "@kangojs/class-validation";
+import { createBodyValidator, createQueryValidator, createParamsValidator } from "@kangojs/class-validation";
 
 const app = express();
 
@@ -51,6 +51,7 @@ const kangoJS = new KangoJS({
     globalPrefix: "/api/v1",
     bodyValidator: createBodyValidator(),
     queryValidator: createQueryValidator(),
+    paramsValidator: createParamsValidator(),
 });
 await kangoJS.boostrap(app);
 ```
@@ -104,7 +105,8 @@ export class UserController {
 }
 ```
 
-This process is exactly the same for query data except you use the `queryShape` route option and `req.queryDto` to access
+This process is exactly the same for query parameters and URL parameters except you use the
+`queryShape` route option and `req.queryDto` or `paramsShape` and `req.paramsDto` to access
 the transformed data instead.
 
 ### Default Behaviour

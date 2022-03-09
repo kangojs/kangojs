@@ -9,4 +9,5 @@ export interface RouteDefinition {
   authRequired?: boolean;
   bodyShape?: any;
   queryShape?: any;
+  paramsShape?: any;
 }
