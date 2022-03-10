@@ -17,7 +17,7 @@ export function createValidator(classTransformerOptions: TransformOptions, class
             classTransformerOptions
         );
 
-        const errors = await validate(dto);
+        const errors = await validate(dto, classValidatorOptions);
 
         if (errors.length > 0) {
             return {
