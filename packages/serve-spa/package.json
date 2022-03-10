@@ -8,7 +8,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf ./build && tsc",
     "prepublishOnly": "npm run build"
   },
   "files": [
