@@ -6,13 +6,13 @@
   "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/class-validation",
   "bugs": "https://github.com/kangojs/kangojs/issues",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "build/index.js",
   "scripts": {
     "build": "rm -rf ./build && tsc",
     "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist/**/*"
+    "build/**/*"
   ],
   "keywords": [
     "kangojs",
