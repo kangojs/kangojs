@@ -5,7 +5,6 @@ import {
   defaultFallbackMapping, ErrorHttpMapping
 } from './error-http-mappings';
 import { BaseError } from '../errors/base.error';
-import { getAllParentNames } from "../utils/get-all-parent-names";
 
 
 export interface ResponseManagerConfig {
@@ -32,23 +31,16 @@ export class ResponseManager {
   }
 
   async sendErrorResponse(err: Error, res: Response) {
-    let httpCode = defaultFallbackMapping.httpCode;
+    const errorName = err.constructor.name;
+    const httpCode = this.errorHttpMapping[errorName].httpCode || defaultFallbackMapping.httpCode;
     let message = defaultFallbackMapping.defaultMessage;
 
     if (err instanceof BaseError) {
       if (err.applicationMessage) {
         message = err.applicationMessage;
       }
-
-      // The HTTP mapping may not contain the error itself, but it may contain any one of its parent errors.
-      // Therefore, will must recursively load the prototype chain and check them all.
-      const errorChain = getAllParentNames(err);
-      for (const errorName of errorChain) {
-        if (errorName && Object.keys(this.errorHttpMapping).includes(errorName)) {
-          httpCode = this.errorHttpMapping[errorName].httpCode;
-          message = err.applicationMessage ? err.applicationMessage : this.errorHttpMapping[errorName].defaultMessage;
-          break;
-        }
+      else if (this.errorHttpMapping[errorName].defaultMessage) {
+        message = this.errorHttpMapping[errorName].defaultMessage;
       }
     }
 
