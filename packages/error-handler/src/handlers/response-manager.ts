@@ -32,14 +32,14 @@ export class ResponseManager {
 
   async sendErrorResponse(err: Error, res: Response) {
     const errorName = err.constructor.name;
-    const httpCode = this.errorHttpMapping[errorName].httpCode || defaultFallbackMapping.httpCode;
+    const httpCode = this.errorHttpMapping[errorName]?.httpCode || defaultFallbackMapping.httpCode;
     let message = defaultFallbackMapping.defaultMessage;
 
     if (err instanceof BaseError) {
       if (err.applicationMessage) {
         message = err.applicationMessage;
       }
-      else if (this.errorHttpMapping[errorName].defaultMessage) {
+      else if (this.errorHttpMapping[errorName]?.defaultMessage) {
         message = this.errorHttpMapping[errorName].defaultMessage;
       }
     }

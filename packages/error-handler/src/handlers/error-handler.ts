@@ -26,7 +26,14 @@ export class ErrorHandler {
   private readonly _logger?: Logger;
   private readonly _responseManager = new ResponseManager();
   private readonly _safeErrors: string[] = [
-    'UserError'
+    'UserError',
+    'AccessError',
+    'AccessDeniedError',
+    'AccessForbiddenError',
+    'ResourceError',
+    'ResourceNotFoundError',
+    'ResourceNotUniqueError',
+    'ResourceRelationshipError'
   ];
 
   constructor(errorHandlerConfig?: ErrorHandlerConfig) {
@@ -39,6 +46,9 @@ export class ErrorHandler {
     }
     if (errorHandlerConfig?.catchUnhandledRejection !== false) {
       ErrorHandler.setupUnhandledRejectionListener();
+    }
+    if (errorHandlerConfig?.logger) {
+      this._logger = errorHandlerConfig.logger;
     }
   }
 
