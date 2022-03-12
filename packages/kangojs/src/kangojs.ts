@@ -108,6 +108,17 @@ class KangoJS {
 
 			let routeMiddleware = [];
 
+			// Routes must explicitly set authRequired=false to disable route protection.
+			// This ensures no route is accidentally left unprotected.
+			if (route.routeDefinition.authRequired !== false) {
+				if (this.authValidator) {
+					routeMiddleware.push(this.authValidator)
+				}
+				else {
+					throw new Error(`No authValidator registered but ${routePath} requires it.`);
+				}
+			}
+
 			if (route.routeDefinition.bodyShape) {
 				if (this.bodyValidator) {
 					routeMiddleware.push(
@@ -138,17 +149,6 @@ class KangoJS {
 				}
 				else {
 					throw new Error(`No paramsValidator function registered but validation is required by ${routePath}`);
-				}
-			}
-
-			// Routes must explicitly set authRequired=false to disable route protection.
-			// This ensures no route is accidentally left unprotected.
-			if (!!route.routeDefinition.authRequired) {
-				if (this.authValidator) {
-					routeMiddleware.push(this.authValidator)
-				}
-				else {
-					throw new Error(`No authValidator registered but ${routePath} requires it.`);
 				}
 			}
 
