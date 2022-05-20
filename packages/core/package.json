@@ -1,9 +1,9 @@
 {
-  "name": "@kangojs/kangojs",
+  "name": "@kangojs/core",
   "version": "1.2.1",
   "description": "An Express framework to make writing typescript express apps quicker and easier.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
-  "homepage": "https://github.com/kangojs/kangojs",
+  "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/core",
   "bugs": "https://github.com/kangojs/kangojs/issues",
   "license": "MIT",
   "main": "build/index.js",

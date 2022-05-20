@@ -1,19 +1,19 @@
 <div align="center">
-<h1>KangoJS</h1>
-<p>A typescript express framework to make writing apps quicker and easier.</p>
+<h1>KangoJS Core</h1>
+<p>The core framework functionality for KangoJS.</p>
 
 <div>
-  <a href="https://www.npmjs.com/package/@kangojs/kangojs" target="_blank">
-    <img src="https://img.shields.io/npm/v/@kangojs/kangojs?style=flat-square" alt="NPM Version" />
+  <a href="https://www.npmjs.com/package/@kangojs/core" target="_blank">
+    <img src="https://img.shields.io/npm/v/@kangojs/core?style=flat-square" alt="NPM Version" />
   </a>
   <a href="https://choosealicense.com/licenses/mit/" target="_blank">
-    <img src="https://img.shields.io/npm/l/@kangojs/kangojs?style=flat-square" alt="MIT License" />
+    <img src="https://img.shields.io/npm/l/@kangojs/core?style=flat-square" alt="MIT License" />
   </a>
 </div>
 </div>
 
 ## 🤔 About
-`@kangojs/kangojs` is the core package for [KangoJS](https://github.com/kangojs/kangojs) and provides the base framework functionality.  
+`@kangojs/core` is the core package for [KangoJS](https://github.com/kangojs/kangojs) and provides the base framework functionality.  
 
 To learn more, read documentation, suggest features or raise issues you can [visit the project on GitHub](https://github.com/kangojs/kangojs).
 

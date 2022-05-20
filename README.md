@@ -3,11 +3,11 @@
 <p>A typescript express framework to make writing apps quicker and easier.</p>
 
 <div>
-  <a href="https://www.npmjs.com/package/@kangojs/kangojs" target="_blank">
-    <img src="https://img.shields.io/npm/v/@kangojs/kangojs?style=flat-square" alt="NPM Version" />
+  <a href="https://www.npmjs.com/package/@kangojs/core" target="_blank">
+    <img src="https://img.shields.io/npm/v/@kangojs/core?style=flat-square" alt="NPM Version" />
   </a>
   <a href="https://choosealicense.com/licenses/mit/" target="_blank">
-    <img src="https://img.shields.io/npm/l/@kangojs/kangojs?style=flat-square" alt="MIT License" />
+    <img src="https://img.shields.io/npm/l/@kangojs/core?style=flat-square" alt="MIT License" />
   </a>
   <a href="https://lerna.js.org/" target="_blank">
     <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff?style=flat-square" alt="Maintained with Lerna" />
@@ -31,7 +31,7 @@ I decided to build my own as it's a good learning opportunity for me, and I can 
 ## 🚀 Getting Started
 Install the npm package:
 ```shell
-npm install @kangojs/kangojs
+npm install @kangojs/core
 ```
 
 To use decorators in typescript you will have to add the following settings to your `tsconfig.json` file:
@@ -47,7 +47,7 @@ so you can manage and update it yourself independent of KangoJS.
 To use KangoJS you can bootstrap it with your Express app like so:
 ```ts
 import express from 'express';
-import { KangoJS } from '@kangojs/kangojs';
+import { KangoJS } from '@kangojs/core';
 import { join } from 'fs';
 
 const app = express();
@@ -90,7 +90,7 @@ that match the `controllerFilesGlob` passed in the options.
 You mark a class as a controller with the `@Controller` decorator and pass what path the controller will manage, for example:
 
 ```typescript
-import { Controller } from '@kangojs/kangojs';
+import { Controller } from '@kangojs/core';
 
 @Controller('/users')
 class UserController {
@@ -106,7 +106,7 @@ export default UserController;
 Routes are added to controllers by adding the `@Route` decorator to methods. For example:
 
 ```typescript
-import { Controller, Route, HTTPMethods } from '@kangojs/kangojs';
+import { Controller, Route, HTTPMethods } from '@kangojs/core';
 import { Request, Response, NextFunction } from 'express';
 
 @Controller('/users')
@@ -152,7 +152,7 @@ The following options are available for the `@Route` decorator:
 Additional documentation for the project can be found [here](https://github.com/kangojs/kangojs/tree/main/docs).
 
 ## 🧰 Other KangoJS Packages
-`@kangojs/kangojs` ([npm](https://www.npmjs.com/package/@kangojs/kangojs), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/kangojs)) is the core package that provides the base functionality for managing controllers and routes.
+`@kangojs/core` ([npm](https://www.npmjs.com/package/@kangojs/core), [codebase](https://github.com/kangojs/kangojs/tree/main/packages/kangojs)) is the core package that provides the base functionality for managing controllers and routes.
 
 There are also a number of other KangoJS packages available that offer additional functionality:
 

@@ -41,7 +41,7 @@ When setting up KangoJS you can simply pass the results of `createBodyValidator`
 
 ```typescript
 import express from 'express';
-import { KangoJS } from '@kangojs/kangojs';
+import { KangoJS } from '@kangojs/core';
 import { createBodyValidator, createQueryValidator, createParamsValidator } from "@kangojs/class-validation";
 
 const app = express();
@@ -87,7 +87,7 @@ Add your DTO to the [`@Route`](https://github.com/kangojs/kangojs#routing) decor
 
 ```typescript
 import { Request, Response, NextFunction } from 'express';
-import { Controller, Route, HTTPMethods } from '@kangojs/kangojs';
+import { Controller, Route, HTTPMethods } from '@kangojs/core';
 import { RequestWithDto } from '@kangojs/class-validation';
 import { UserAddDTO } from './user-add.dto';
 
