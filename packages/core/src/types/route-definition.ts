@@ -10,4 +10,5 @@ export interface RouteDefinition {
   bodyShape?: any;
   queryShape?: any;
   paramsShape?: any;
+  handleResponse?: boolean;
 }

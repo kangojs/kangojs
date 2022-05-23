@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { Application, Router } from "express";
+import {Application, NextFunction, Request, Router, Response} from "express";
 import glob from "glob-promise";
 
 import { KangoJSOptions, MiddlewareFunction, ValidatorFunction } from "./types/kangojs-options";
@@ -153,7 +153,24 @@ export class KangoJS {
       }
 
       // Bind the controller instance to ensure the method works as expected.
-      routeMiddleware.push(controllerInstance[route.methodName].bind(controllerInstance));
+      const controllerMethod = controllerInstance[route.methodName].bind(controllerInstance);
+
+      const controllerHandler = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          const output = await controllerMethod(req, res, next);
+
+          if (route.routeDefinition.handleResponse) {
+            return;
+          }
+          else {
+            return res.send(output);
+          }
+        }
+        catch (e) {
+          return next(e);
+        }
+      };
+      routeMiddleware.push(controllerHandler);
 
       switch (route.routeDefinition.httpMethod) {
       case HTTPMethods.GET: {
