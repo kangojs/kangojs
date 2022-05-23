@@ -1,7 +1,7 @@
-import { OptionsJson, OptionsUrlencoded } from 'body-parser'
-import { CorsOptions } from 'cors';
-import { CookieParseOptions } from 'cookie-parser';
-import { MalformedRequestOptions } from './malformed-request-options';
+import { OptionsJson, OptionsUrlencoded } from "body-parser";
+import { CorsOptions } from "cors";
+import { CookieParseOptions } from "cookie-parser";
+import { MalformedRequestOptions } from "./malformed-request-options";
 
 /**
  * Customisation options for the useCommonMiddleware function.

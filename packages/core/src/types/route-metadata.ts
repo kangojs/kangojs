@@ -1,4 +1,4 @@
-import { RouteDefinition } from './route-definition';
+import { RouteDefinition } from "./route-definition";
 
 /**
  * Route metadata used internally by the @Route decorator

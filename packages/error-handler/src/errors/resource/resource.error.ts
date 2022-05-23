@@ -1,4 +1,4 @@
-import { UserError } from '../user.error';
+import { UserError } from "../user.error";
 
 /**
  * A subset of UserError specifically for resource related errors

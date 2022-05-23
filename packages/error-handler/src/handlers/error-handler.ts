@@ -1,6 +1,6 @@
-import { Response } from 'express';
-import { ResponseManager } from './response-manager';
-import { BaseError } from '../errors/base.error';
+import { Response } from "express";
+import { ResponseManager } from "./response-manager";
+import { BaseError } from "../errors/base.error";
 
 /**
  * The interface for a custom logger that can be used with the handler.
@@ -26,14 +26,14 @@ export class ErrorHandler {
   private readonly _logger?: Logger;
   private readonly _responseManager = new ResponseManager();
   private readonly _safeErrors: string[] = [
-    'UserError',
-    'AccessError',
-    'AccessDeniedError',
-    'AccessForbiddenError',
-    'ResourceError',
-    'ResourceNotFoundError',
-    'ResourceNotUniqueError',
-    'ResourceRelationshipError'
+    "UserError",
+    "AccessError",
+    "AccessDeniedError",
+    "AccessForbiddenError",
+    "ResourceError",
+    "ResourceNotFoundError",
+    "ResourceNotUniqueError",
+    "ResourceRelationshipError"
   ];
 
   constructor(errorHandlerConfig?: ErrorHandlerConfig) {
@@ -53,13 +53,13 @@ export class ErrorHandler {
   }
 
   private static setupUnhandledRejectionListener() {
-    process.on('unhandledRejection', (reason: string, p: Promise<any>) => {
+    process.on("unhandledRejection", (reason: string, p: Promise<any>) => {
       throw reason;
     });
   }
 
   private setupUncaughtExceptionListener() {
-    process.on('uncaughtException', async (error: Error) => {
+    process.on("uncaughtException", async (error: Error) => {
       await this.handleError(error);
       await this._handleUnexpectedError();
     });

@@ -5,9 +5,12 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "lerna": "^4.0.0",
     "@commitlint/cli": "^16.0.2",
     "@commitlint/config-conventional": "^16.0.0",
-    "husky": "^7.0.4"
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "^8.16.0",
+    "husky": "^7.0.4",
+    "lerna": "^4.0.0"
   }
 }

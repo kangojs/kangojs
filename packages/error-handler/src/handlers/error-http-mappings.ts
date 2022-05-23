@@ -1,4 +1,4 @@
-import { HTTPStatusCodes } from '@kangojs/http-status-codes';
+import { HTTPStatusCodes } from "@kangojs/http-status-codes";
 
 export interface ErrorHttpMapping {
   httpCode: HTTPStatusCodes,
@@ -11,32 +11,32 @@ export interface ErrorHttpMappings {
 
 export const defaultFallbackMapping: ErrorHttpMapping = {
   httpCode: HTTPStatusCodes.INTERNAL_SERVER_ERROR,
-  defaultMessage: 'An unexpected error occurred while processing your request. Please try again later.'
-}
+  defaultMessage: "An unexpected error occurred while processing your request. Please try again later."
+};
 
 export const defaultErrorHTTPMapping: ErrorHttpMappings = {
-  'UserError': {
+  "UserError": {
     httpCode: HTTPStatusCodes.BAD_REQUEST,
-    defaultMessage: 'You request was invalid.'
+    defaultMessage: "You request was invalid."
   },
-  'ResourceNotFoundError': {
+  "ResourceNotFoundError": {
     httpCode: HTTPStatusCodes.NOT_FOUND,
-    defaultMessage: 'The requested resource could not be found.'
+    defaultMessage: "The requested resource could not be found."
   },
-  'ResourceNotUniqueError': {
+  "ResourceNotUniqueError": {
     httpCode: HTTPStatusCodes.BAD_REQUEST,
-    defaultMessage: 'Your request would make a resource that is not unique.'
+    defaultMessage: "Your request would make a resource that is not unique."
   },
-  'ResourceRelationshipError': {
+  "ResourceRelationshipError": {
     httpCode: HTTPStatusCodes.BAD_REQUEST,
-    defaultMessage: 'Your request includes an invalid relationship to another resource.'
+    defaultMessage: "Your request includes an invalid relationship to another resource."
   },
-  'AccessDeniedError': {
+  "AccessDeniedError": {
     httpCode: HTTPStatusCodes.UNAUTHORIZED,
-    defaultMessage: 'Your are not authorized to access the given resource.'
+    defaultMessage: "Your are not authorized to access the given resource."
   },
-  'AccessForbiddenError': {
+  "AccessForbiddenError": {
     httpCode: HTTPStatusCodes.FORBIDDEN,
-    defaultMessage: 'Your are forbidden from accessing the given resource.'
+    defaultMessage: "Your are forbidden from accessing the given resource."
   }
-}
+};

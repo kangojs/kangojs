@@ -1,11 +1,11 @@
-import express, { Application } from 'express';
+import express, { Application } from "express";
 
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import { gnuTerryPratchett } from './middleware/gnu-terry-pratchett';
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { gnuTerryPratchett } from "./middleware/gnu-terry-pratchett";
 
-import { CommonMiddlewareOptions } from './types/common-middleware-options';
-import { useMalformedRequestMiddleware } from './middleware/malformed-requests';
+import { CommonMiddlewareOptions } from "./types/common-middleware-options";
+import { useMalformedRequestMiddleware } from "./middleware/malformed-requests";
 
 /**
  * A function to add common middleware to your Express app.

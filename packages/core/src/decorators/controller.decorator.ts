@@ -1,4 +1,4 @@
-import { MetadataKeys } from './metadata-keys';
+import { MetadataKeys } from "./metadata-keys";
 
 /**
  * Controller decorator used to mark a class as a controller.
@@ -6,7 +6,7 @@ import { MetadataKeys } from './metadata-keys';
  * @param routePrefix - The prefix of all routes in the controller.
  * @constructor
  */
-export function Controller(routePrefix: string = ''): ClassDecorator {
+export function Controller(routePrefix = ""): ClassDecorator {
   return function(target: any) {
     Reflect.defineMetadata(MetadataKeys.ROUTE_PREFIX, routePrefix, target);
 

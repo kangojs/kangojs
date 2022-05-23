@@ -1,10 +1,10 @@
-import { Response } from 'express';
+import { Response } from "express";
 import {
   ErrorHttpMappings,
   defaultErrorHTTPMapping,
   defaultFallbackMapping, ErrorHttpMapping
-} from './error-http-mappings';
-import { BaseError } from '../errors/base.error';
+} from "./error-http-mappings";
+import { BaseError } from "../errors/base.error";
 
 
 export interface ResponseManagerConfig {
@@ -22,7 +22,7 @@ export class ResponseManager {
       this.errorHttpMapping = {
         ...this.errorHttpMapping,
         ...responseManagerConfig.errorHttpMapping
-      }
+      };
     }
 
     if (responseManagerConfig?.fallbackErrorMapping) {
@@ -47,6 +47,6 @@ export class ResponseManager {
     return res.status(httpCode).send({
       statusCode: httpCode,
       message: message
-    })
+    });
   }
 }

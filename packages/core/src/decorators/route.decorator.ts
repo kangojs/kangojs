@@ -1,6 +1,6 @@
-import { MetadataKeys } from './metadata-keys';
-import { RouteDefinition } from '../types/route-definition';
-import { RouteMetadata } from '../types/route-metadata';
+import { MetadataKeys } from "./metadata-keys";
+import { RouteDefinition } from "../types/route-definition";
+import { RouteMetadata } from "../types/route-metadata";
 
 /**
  * Route decorator used to mark a controller method as a route.

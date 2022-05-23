@@ -10,25 +10,25 @@ import { validate, ValidatorOptions } from "class-validator";
  * @param classValidatorOptions
  */
 export function createValidator(classTransformerOptions: TransformOptions, classValidatorOptions: ValidatorOptions) {
-    return async function validator(dtoClass: any, data: any): Promise<ValidationResult> {
-        const dto = plainToInstance(
-            dtoClass,
-            data,
-            classTransformerOptions
-        );
+  return async function validator(dtoClass: any, data: any): Promise<ValidationResult> {
+    const dto = plainToInstance(
+      dtoClass,
+      data,
+      classTransformerOptions
+    );
 
-        const errors = await validate(dto, classValidatorOptions);
+    const errors = await validate(dto, classValidatorOptions);
 
-        if (errors.length > 0) {
-            return {
-                passed: false,
-                error: errors,
-            }
-        }
-
-        return {
-            passed: true,
-            dto: dto,
-        }
+    if (errors.length > 0) {
+      return {
+        passed: false,
+        error: errors,
+      };
     }
+
+    return {
+      passed: true,
+      dto: dto,
+    };
+  };
 }
