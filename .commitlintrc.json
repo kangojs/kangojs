@@ -5,6 +5,7 @@
     ],
     "rules": {
         "type-enum": [2, "always", [
+            "wip",
             "build",
             "chore",
             "ci",
