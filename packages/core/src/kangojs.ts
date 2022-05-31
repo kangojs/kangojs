@@ -7,12 +7,13 @@ import { KangoJSOptions, MiddlewareFunction, ValidatorFunction } from "./types/k
 import { MetadataKeys } from "./decorators/metadata-keys";
 import { HTTPMethods } from "./utils/http-methods";
 import { RouteMetadata } from "./types/route-metadata";
+import { DependencyContainer } from "./utils/dependency-container";
 
 /**
  * The main object that encapsulates and manages all framework features.
  */
 export class KangoJS {
-  private readonly router: Router;
+  private readonly dependencyContainer: DependencyContainer;
   private readonly controllerFilesGlob: string;
   private readonly globalPrefix?: string;
   private readonly authValidator?: MiddlewareFunction;
@@ -26,7 +27,11 @@ export class KangoJS {
 	 * @param options - options for customising how KangoJS works.
 	 */
   constructor(options: KangoJSOptions) {
-    this.router = Router();
+    this.dependencyContainer = new DependencyContainer();
+
+    // Add KangoJS router to dependencies
+    this.dependencyContainer.addDependency(Router);
+
     this.controllerFilesGlob = options.controllerFilesGlob;
     this.globalPrefix = options.globalPrefix || undefined;
     this.authValidator = options.authValidator || undefined;
@@ -47,11 +52,13 @@ export class KangoJS {
       await this.processController(controller);
     }
 
+    const router = this.dependencyContainer.getDependency<Router>(Router);
+
     if (this.globalPrefix) {
-      app.use(this.globalPrefix, this.router);
+      app.use(this.globalPrefix, router);
     }
     else {
-      app.use(this.router);
+      app.use(router);
     }
   }
 
@@ -155,25 +162,27 @@ export class KangoJS {
       // Bind the controller instance to ensure the method works as expected.
       routeMiddleware.push(controllerInstance[route.methodName].bind(controllerInstance));
 
+      const router = this.dependencyContainer.getDependency<Router>(Router);
+
       switch (route.routeDefinition.httpMethod) {
       case HTTPMethods.GET: {
-        this.router.get(routePath, ...routeMiddleware);
+        router.get(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.POST: {
-        this.router.post(routePath, ...routeMiddleware);
+        router.post(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.PATCH: {
-        this.router.patch(routePath, ...routeMiddleware);
+        router.patch(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.PUT: {
-        this.router.put(routePath, ...routeMiddleware);
+        router.put(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.DELETE: {
-        this.router.delete(routePath, ...routeMiddleware);
+        router.delete(routePath, ...routeMiddleware);
         break;
       }
       }
