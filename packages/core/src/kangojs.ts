@@ -48,8 +48,8 @@ export class KangoJS {
     this.paramsValidator = options.paramsValidator || undefined;
   }
 
-  getDependency<T>(dependency: unknown) {
-    return this.dependencyContainer.getDependency<T>(dependency);
+  useDependency<T>(dependency: unknown) {
+    return this.dependencyContainer.useDependency<T>(dependency);
   }
 
   getApp(): Application {
@@ -112,7 +112,7 @@ export class KangoJS {
 	 * @private
 	 */
   private async processController(controller: any) {
-    const controllerInstance = this.dependencyContainer.getDependency<typeof controller>(controller);
+    const controllerInstance = this.dependencyContainer.useDependency<typeof controller>(controller);
 
     // Setup controller routes.
     const controllerGlobalRoute = <string> Reflect.getMetadata(MetadataKeys.ROUTE_PREFIX, controller);

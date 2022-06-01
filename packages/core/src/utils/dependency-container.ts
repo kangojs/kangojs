@@ -1,40 +1,54 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import {MetadataKeys} from "../decorators/metadata-keys";
 import {DependencyConfig} from "../decorators/injectable.decorator";
 
-export type GenericClass = any;
-
+/**
+ * The interface for the dependency store itself.
+ */
 export interface Dependencies {
   [key: symbol]: any;
 }
 
+/**
+ * An IoC container for managing the registration and retrieval of dependencies.
+ */
 export class DependencyContainer {
   private dependencies: Dependencies = {};
 
-  getDependency<T>(dependency: GenericClass): T {
+  /**
+   * Use the supplied dependency via the IoC container.
+   * This method will register the dependency or retrieve the existing dependency if already registered,
+   * 
+   * @param dependency
+   */
+  useDependency<T>(dependency: any): T {
     const dependencyKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, dependency);
 
     if (!dependencyKey) {
-      throw new Error("Dependencies registered to KangoJS must be marked as injectable");
+      throw new Error("Dependency requested that isn't marked as injectable");
     }
 
     const dependencyConfig = <DependencyConfig> Reflect.getMetadata(MetadataKeys.DEPENDENCY_CONFIG, dependency);
 
-    if (dependencyKey in this.dependencies) {
-      return this.returnDependency<T>(dependencyKey, dependencyConfig);
-    }
-
-    if (dependencyConfig.injectMode === "global") {
-      this.dependencies[dependencyKey] = this.createInstance(dependency);
-    }
-    else {
-      this.dependencies[dependencyKey] = dependency;
+    // Register the dependency if it doesn't already exist.
+    if (!(dependencyKey in this.dependencies)) {
+      if (dependencyConfig.injectMode === "global") {
+        this.createInstance(dependency, dependencyKey);
+      }
+      else {
+        this.dependencies[dependencyKey] = dependency;
+      }
     }
 
     return this.returnDependency<T>(dependencyKey, dependencyConfig);
   }
 
+  /**
+   * Return the dependency for the given key
+   *
+   * @param dependencyKey
+   * @param dependencyConfig
+   * @private
+   */
   private returnDependency<T>(dependencyKey: symbol, dependencyConfig: DependencyConfig): T {
     if (dependencyConfig.injectMode === "global") {
       return this.dependencies[dependencyKey] as T;
@@ -44,22 +58,29 @@ export class DependencyContainer {
     }
   }
 
-  private createInstance(dependency: any) {
+  /**
+   * Create an instance of the given dependency, recursively injecting child dependencies too.
+   *
+   * @param dependency
+   * @param dependencyKey
+   * @private
+   */
+  private createInstance(dependency: any, dependencyKey: symbol) {
     const constructorArguments: any[] = [];
 
     for (const constructorArgument in dependency.arguments) {
-      const dependencyKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, constructorArgument);
+      const constructorArgumentKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, constructorArgument);
 
-      if (!dependencyKey) {
+      if (!constructorArgumentKey) {
         constructorArguments.push(constructorArgument);
       }
       else {
         constructorArguments.push(
-          this.createInstance(dependency)
+          this.useDependency(dependency)
         );
       }
     }
 
-    return new dependency(...constructorArguments);
+    this.dependencies[dependencyKey] = new dependency(...constructorArguments);
   }
 }
