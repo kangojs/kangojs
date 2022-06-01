@@ -1,40 +1,65 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import {MetadataKeys} from "../decorators/metadata-keys";
+import {DependencyConfig} from "../decorators/injectable.decorator";
+
 export type GenericClass = any;
 
-export interface DependencyMap {
-  [key: symbol]: GenericClass
-}
-
 export interface Dependencies {
-  [key: symbol]: unknown;
+  [key: symbol]: any;
 }
 
 export class DependencyContainer {
-  private dependencyMap: DependencyMap = {};
   private dependencies: Dependencies = {};
 
-  addDependency(dependency: GenericClass) {
-    const key = Symbol.for(dependency.toString());
-    this.dependencyMap[key] = dependency;
-    console.log("[KangoJS][DI] - Adding dependency " + key.toString());
-  }
-
   getDependency<T>(dependency: GenericClass): T {
-    const key = Symbol.for(dependency.toString());
+    const dependencyKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, dependency);
 
-    if (!(key in this.dependencyMap)) {
-      throw new Error("Dependency not found");
+    if (!dependencyKey) {
+      throw new Error("Dependencies registered to KangoJS must be marked as injectable");
     }
 
-    if (!(key in this.dependencies)) {
-      this.dependencies[key] = this.createInstance(this.dependencyMap[key]);
+    const dependencyConfig = <DependencyConfig> Reflect.getMetadata(MetadataKeys.DEPENDENCY_CONFIG, dependency);
+
+    if (dependencyKey in this.dependencies) {
+      return this.returnDependency<T>(dependencyKey, dependencyConfig);
     }
 
-    return this.dependencies[key] as T;
+    if (dependencyConfig.injectMode === "global") {
+      this.dependencies[dependencyKey] = this.createInstance(dependency);
+    }
+    else {
+      this.dependencies[dependencyKey] = dependency;
+    }
+
+    return this.returnDependency<T>(dependencyKey, dependencyConfig);
   }
 
-  createInstance(dependency: new() => any): any {
-    return new dependency();
+  private returnDependency<T>(dependencyKey: symbol, dependencyConfig: DependencyConfig): T {
+    if (dependencyConfig.injectMode === "global") {
+      return this.dependencies[dependencyKey] as T;
+    }
+    else {
+      return new this.dependencies[dependencyKey] as T;
+    }
+  }
+
+  private createInstance(dependency: any) {
+    const constructorArguments: any[] = [];
+
+    for (const constructorArgument in dependency.arguments) {
+      const dependencyKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, constructorArgument);
+
+      if (!dependencyKey) {
+        constructorArguments.push(constructorArgument);
+      }
+      else {
+        constructorArguments.push(
+          this.createInstance(dependency)
+        );
+      }
+    }
+
+    return new dependency(...constructorArguments);
   }
 }

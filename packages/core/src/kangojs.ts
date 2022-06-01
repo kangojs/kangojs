@@ -13,6 +13,8 @@ import { DependencyContainer } from "./utils/dependency-container";
  * The main object that encapsulates and manages all framework features.
  */
 export class KangoJS {
+  private readonly app: Application;
+  private readonly router: Router;
   private readonly dependencyContainer: DependencyContainer;
   private readonly controllerFilesGlob: string;
   private readonly globalPrefix?: string;
@@ -22,22 +24,40 @@ export class KangoJS {
   private readonly paramsValidator?: ValidatorFunction;
 
   /**
-	 * The object constructor.
-	 *
-	 * @param options - options for customising how KangoJS works.
-	 */
-  constructor(options: KangoJSOptions) {
+   * The object constructor.
+   *
+   * @param app - An Express application
+   * @param options - options for customising how KangoJS works.
+   */
+  constructor(app: Application, options: KangoJSOptions) {
+    this.app = app;
+    this.router = Router();
+
+    // Setup dependency container
+    // no dependencies are added till .bootstrap to allow for overwrites of the Express router/app etc
     this.dependencyContainer = new DependencyContainer();
 
-    // Add KangoJS router to dependencies
-    this.dependencyContainer.addDependency(Router);
-
+    // Setup configuration
     this.controllerFilesGlob = options.controllerFilesGlob;
     this.globalPrefix = options.globalPrefix || undefined;
+
+    // Setup global helper functions
     this.authValidator = options.authValidator || undefined;
     this.bodyValidator = options.bodyValidator || undefined;
     this.queryValidator = options.queryValidator || undefined;
     this.paramsValidator = options.paramsValidator || undefined;
+  }
+
+  getDependency<T>(dependency: unknown) {
+    return this.dependencyContainer.getDependency<T>(dependency);
+  }
+
+  getApp(): Application {
+    return this.app;
+  }
+
+  getRouter(): Router {
+    return this.router;
   }
 
   /**
@@ -45,20 +65,18 @@ export class KangoJS {
 	 *
 	 * @param app - The Express app instance to add routes to.
 	 */
-  async boostrap(app: Application) {
+  async boostrap() {
     const controllers = await KangoJS._getControllersFromFiles(this.controllerFilesGlob);
 
     for (const controller of controllers) {
       await this.processController(controller);
     }
 
-    const router = this.dependencyContainer.getDependency<Router>(Router);
-
     if (this.globalPrefix) {
-      app.use(this.globalPrefix, router);
+      this.app.use(this.globalPrefix, this.router);
     }
     else {
-      app.use(router);
+      this.app.use(this.router);
     }
   }
 
@@ -94,7 +112,7 @@ export class KangoJS {
 	 * @private
 	 */
   private async processController(controller: any) {
-    const controllerInstance = new controller();
+    const controllerInstance = this.dependencyContainer.getDependency<typeof controller>(controller);
 
     // Setup controller routes.
     const controllerGlobalRoute = <string> Reflect.getMetadata(MetadataKeys.ROUTE_PREFIX, controller);
@@ -162,27 +180,25 @@ export class KangoJS {
       // Bind the controller instance to ensure the method works as expected.
       routeMiddleware.push(controllerInstance[route.methodName].bind(controllerInstance));
 
-      const router = this.dependencyContainer.getDependency<Router>(Router);
-
       switch (route.routeDefinition.httpMethod) {
       case HTTPMethods.GET: {
-        router.get(routePath, ...routeMiddleware);
+        this.router.get(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.POST: {
-        router.post(routePath, ...routeMiddleware);
+        this.router.post(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.PATCH: {
-        router.patch(routePath, ...routeMiddleware);
+        this.router.patch(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.PUT: {
-        router.put(routePath, ...routeMiddleware);
+        this.router.put(routePath, ...routeMiddleware);
         break;
       }
       case HTTPMethods.DELETE: {
-        router.delete(routePath, ...routeMiddleware);
+        this.router.delete(routePath, ...routeMiddleware);
         break;
       }
       }
