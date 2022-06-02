@@ -11,6 +11,6 @@
     "tests",
     "build",
     "node_modules",
-    "jest.config.ts"
+    "jest.*.ts"
   ]
 }
