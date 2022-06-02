@@ -1,5 +1,8 @@
 import {MetadataKeys} from "../decorators/metadata-keys";
 import {DependencyConfig} from "../decorators/injectable.decorator";
+import {Logger} from "./logger";
+import {LoggerBase} from "../types/logger-interface";
+
 
 /**
  * The interface for a single dependency
@@ -21,13 +24,23 @@ export interface DependencyStore {
  */
 export class DependencyContainer {
   private dependencyStore: DependencyStore = {};
+  private readonly logger: LoggerBase;
+
+  constructor() {
+    // Manually create the logger dependency to ensure it exists immediately
+    this.logger = new Logger();
+    this.dependencyStore[Symbol.for(Logger.toString())] = {
+      signature: Logger,
+      instance: this.logger
+    };
+  }
 
   /**
    * Get the dependency key attached to the metadata if it exists.
    * @param dependency
    */
   getDependencyKey(dependency: any): symbol | undefined {
-    return <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, dependency);
+    return <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, dependency.prototype);
   }
 
   /**
@@ -35,7 +48,7 @@ export class DependencyContainer {
    * @param dependency
    */
   getDependencyConfig(dependency: any): DependencyConfig | undefined {
-    return <DependencyConfig> Reflect.getMetadata(MetadataKeys.DEPENDENCY_CONFIG, dependency);
+    return <DependencyConfig> Reflect.getMetadata(MetadataKeys.DEPENDENCY_CONFIG, dependency.prototype);
   }
 
   /**
@@ -70,13 +83,18 @@ export class DependencyContainer {
   private registerDependency(dependencyKey: symbol, dependency: any) {
     const dependencyConfig = this.getDependencyConfig(dependency);
 
-    if (dependencyConfig?.injectMode === "global") {
+    if (dependencyConfig?.injectMode === "singleton") {
       this.createInstance(dependencyKey, dependency);
     }
     else {
       this.dependencyStore[dependencyKey] = {
         signature: dependency
       };
+
+      this.logger.log({
+        origin: "DependencyContainer",
+        message: `Registered unique dependency ${String(dependencyKey)}`
+      });
     }
   }
 
@@ -90,10 +108,20 @@ export class DependencyContainer {
     const storedDependency = this.dependencyStore[dependencyKey];
     const storedDependencyConfig = this.getDependencyConfig(storedDependency.signature);
 
-    if (storedDependencyConfig?.injectMode === "global") {
+    if (storedDependencyConfig?.injectMode === "singleton") {
+      this.logger.log({
+        origin: "DependencyContainer",
+        message: `Returning existing instance of ${String(dependencyKey)}`
+      });
+
       return this.dependencyStore[dependencyKey].instance as T;
     }
     else {
+      this.logger.log({
+        origin: "DependencyContainer",
+        message: `Returning new instance of ${String(dependencyKey)}`
+      });
+
       return new this.dependencyStore[dependencyKey].signature as T;
     }
   }
@@ -107,8 +135,9 @@ export class DependencyContainer {
    */
   private createInstance(dependencyKey: symbol, dependency: any) {
     const constructorArguments: any[] = [];
+    const argumentTypes = <any[]> Reflect.getMetadata("design:paramtypes", dependency) ?? [];
 
-    for (const constructorArgument in dependency.arguments) {
+    for (const constructorArgument in argumentTypes) {
       const constructorArgumentKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, constructorArgument);
 
       if (!constructorArgumentKey) {
@@ -125,6 +154,11 @@ export class DependencyContainer {
       signature: dependency,
       instance: new dependency(...constructorArguments)
     };
+
+    this.logger.log({
+      origin: "DependencyContainer",
+      message: `Registered singleton dependency ${String(dependencyKey)}`
+    });
   }
 
   /**
