@@ -14,6 +14,8 @@ class TestSingletonDependency {
   }
 }
 
+class ChildTestSingletonDependency extends TestSingletonDependency{}
+
 @Injectable({
   injectMode: "unique",
   identifier: "test-unique"
@@ -24,6 +26,7 @@ class TestUniqueDependency {
     return "test method";
   }
 }
+
 
 describe("Dependency Container",() => {
   let testDependencyContainer: DependencyContainer;
@@ -50,5 +53,13 @@ describe("Dependency Container",() => {
     const dep2 = testDependencyContainer.useDependency<TestUniqueDependency>(TestUniqueDependency);
 
     expect(dep1 === dep2).toBeFalsy();
+  });
+
+  it("When a dependency is overridden, the new dependency override should then be returned", async () => {
+    testDependencyContainer.useDependency(TestSingletonDependency);
+    testDependencyContainer.overrideDependency(TestSingletonDependency, ChildTestSingletonDependency);
+    const dep2 = testDependencyContainer.useDependency<ChildTestSingletonDependency>(TestSingletonDependency);
+
+    expect(dep2).toBeInstanceOf(ChildTestSingletonDependency);
   });
 });
