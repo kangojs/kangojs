@@ -1,1 +1,1 @@
-console.log("This is a package template for KangoJS.")
+console.log("This is a package template for KangoJS.");
