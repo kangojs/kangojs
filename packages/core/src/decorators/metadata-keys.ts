@@ -3,5 +3,7 @@
  */
 export enum MetadataKeys {
   ROUTE_PREFIX = "routePrefix",
-  ROUTES = "routes"
+  ROUTES = "routes",
+  DEPENDENCY_KEY = "dependencyKey",
+  DEPENDENCY_CONFIG = "dependencyConfig",
 }

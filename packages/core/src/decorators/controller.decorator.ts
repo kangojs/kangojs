@@ -14,5 +14,10 @@ export function Controller(routePrefix = ""): ClassDecorator {
     if (!Reflect.hasMetadata(MetadataKeys.ROUTES, target)) {
       Reflect.defineMetadata(MetadataKeys.ROUTES, [], target);
     }
+
+    // Automatically setup dependency metadata here so users don't need to add @Injectable to controllers
+    const dependencyKey = Symbol.for(target.toString());
+    Reflect.defineMetadata(MetadataKeys.DEPENDENCY_KEY, dependencyKey, target);
+    Reflect.defineMetadata(MetadataKeys.DEPENDENCY_CONFIG, {mode: "global"}, target);
   };
 }

@@ -7,12 +7,15 @@ import { KangoJSOptions, MiddlewareFunction, ValidatorFunction } from "./types/k
 import { MetadataKeys } from "./decorators/metadata-keys";
 import { HTTPMethods } from "./utils/http-methods";
 import { RouteMetadata } from "./types/route-metadata";
+import { DependencyContainer } from "./utils/dependency-container";
 
 /**
  * The main object that encapsulates and manages all framework features.
  */
 export class KangoJS {
+  private readonly app: Application;
   private readonly router: Router;
+  readonly dependencyContainer: DependencyContainer;
   private readonly controllerFilesGlob: string;
   private readonly globalPrefix?: string;
   private readonly authValidator?: MiddlewareFunction;
@@ -21,18 +24,36 @@ export class KangoJS {
   private readonly paramsValidator?: ValidatorFunction;
 
   /**
-	 * The object constructor.
-	 *
-	 * @param options - options for customising how KangoJS works.
-	 */
-  constructor(options: KangoJSOptions) {
+   * The object constructor.
+   *
+   * @param app - An Express application
+   * @param options - options for customising how KangoJS works.
+   */
+  constructor(app: Application, options: KangoJSOptions) {
+    this.app = app;
     this.router = Router();
+
+    // Setup dependency container
+    // no dependencies are added till .bootstrap to allow for overwrites of the Express router/app etc
+    this.dependencyContainer = new DependencyContainer();
+
+    // Setup configuration
     this.controllerFilesGlob = options.controllerFilesGlob;
     this.globalPrefix = options.globalPrefix || undefined;
+
+    // Setup global helper functions
     this.authValidator = options.authValidator || undefined;
     this.bodyValidator = options.bodyValidator || undefined;
     this.queryValidator = options.queryValidator || undefined;
     this.paramsValidator = options.paramsValidator || undefined;
+  }
+
+  getApp(): Application {
+    return this.app;
+  }
+
+  getRouter(): Router {
+    return this.router;
   }
 
   /**
@@ -40,7 +61,7 @@ export class KangoJS {
 	 *
 	 * @param app - The Express app instance to add routes to.
 	 */
-  async boostrap(app: Application) {
+  async boostrap() {
     const controllers = await KangoJS._getControllersFromFiles(this.controllerFilesGlob);
 
     for (const controller of controllers) {
@@ -48,10 +69,10 @@ export class KangoJS {
     }
 
     if (this.globalPrefix) {
-      app.use(this.globalPrefix, this.router);
+      this.app.use(this.globalPrefix, this.router);
     }
     else {
-      app.use(this.router);
+      this.app.use(this.router);
     }
   }
 
@@ -87,7 +108,7 @@ export class KangoJS {
 	 * @private
 	 */
   private async processController(controller: any) {
-    const controllerInstance = new controller();
+    const controllerInstance = this.dependencyContainer.useDependency<typeof controller>(controller);
 
     // Setup controller routes.
     const controllerGlobalRoute = <string> Reflect.getMetadata(MetadataKeys.ROUTE_PREFIX, controller);

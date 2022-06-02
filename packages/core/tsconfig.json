@@ -5,11 +5,14 @@
     "strict": true,
     "declaration": true,
     "esModuleInterop": true,
-    "outDir": "./build"
+    "outDir": "./build",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": [
     "tests",
     "build",
-    "node_modules"
+    "node_modules",
+    "jest.*.ts",
   ]
 }

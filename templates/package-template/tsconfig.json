@@ -10,6 +10,7 @@
   "exclude": [
     "tests",
     "build",
-    "node_modules"
+    "node_modules",
+    "jest.*.ts"
   ]
 }
