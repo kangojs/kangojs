@@ -15,7 +15,7 @@ import { DependencyContainer } from "./utils/dependency-container";
 export class KangoJS {
   private readonly app: Application;
   private readonly router: Router;
-  private readonly dependencyContainer: DependencyContainer;
+  readonly dependencyContainer: DependencyContainer;
   private readonly controllerFilesGlob: string;
   private readonly globalPrefix?: string;
   private readonly authValidator?: MiddlewareFunction;
@@ -46,10 +46,6 @@ export class KangoJS {
     this.bodyValidator = options.bodyValidator || undefined;
     this.queryValidator = options.queryValidator || undefined;
     this.paramsValidator = options.paramsValidator || undefined;
-  }
-
-  useDependency<T>(dependency: unknown) {
-    return this.dependencyContainer.useDependency<T>(dependency);
   }
 
   getApp(): Application {
