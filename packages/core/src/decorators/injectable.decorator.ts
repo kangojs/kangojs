@@ -26,7 +26,7 @@ export function Injectable(config?: DependencyConfig) {
       : Symbol.for(target.toString());
     Reflect.defineMetadata(MetadataKeys.DEPENDENCY_KEY, dependencyKey, target.prototype);
 
-    const dependencyConfig = config ?? {mode: "global"};
+    const dependencyConfig = config ?? {injectMode: "global"};
     Reflect.defineMetadata(MetadataKeys.DEPENDENCY_CONFIG, dependencyConfig, target.prototype);
   };
 }

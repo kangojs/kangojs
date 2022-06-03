@@ -1,23 +1,15 @@
-import { NextFunction, Request, Response } from "express";
-
-/**
- * A generic middleware function for Express.
- */
-export type MiddlewareFunction = (req: Request, res: Response, next: NextFunction) => any;
-
-/**
- * A generic request validator function for use in KangoJS.
- */
-export type ValidatorFunction = (shape: any) => MiddlewareFunction;
+import { Instantiable } from "../utils/dependency-container";
+import { MiddlewareFactory, MiddlewareFunction, RequestValidator } from "./middleware-interface";
 
 /**
  * Options that can be passed to KangoJS when it's instantiated.
  */
 export interface KangoJSOptions {
-  controllerFilesGlob: string;
+  controllers: Instantiable<any>[],
+  middleware?: ( MiddlewareFunction | Instantiable<MiddlewareFactory> )[];
   globalPrefix?: string;
-  authValidator?: MiddlewareFunction;
-  bodyValidator?: ValidatorFunction;
-  queryValidator?: ValidatorFunction;
-  paramsValidator?: ValidatorFunction;
+  authValidator?: Instantiable<MiddlewareFactory>;
+  bodyValidator?: Instantiable<RequestValidator>;
+  queryValidator?: Instantiable<RequestValidator>;
+  paramsValidator?: Instantiable<RequestValidator>;
 }

@@ -7,7 +7,7 @@ import {LoggerBase} from "../types/logger-interface";
 /**
  * An interface for something that is instantiable.
  */
-interface Instantiable<T> {
+export interface Instantiable<T> {
   new(...args: any[]): T;
 }
 

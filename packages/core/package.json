@@ -30,7 +30,7 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "glob-promise": "^4.2.2",
+    "@kangojs/http-status-codes": "^1.0.1",
     "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
