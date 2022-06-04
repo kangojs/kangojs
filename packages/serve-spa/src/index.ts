@@ -2,14 +2,14 @@ import { resolve } from "path";
 import {NextFunction, Request, Response} from "express";
 
 import { UseServeSPAOptions } from "./types/use-serve-spa-options";
-import {HTTPStatusCodes, Middleware, MiddlewareFactory} from "@kangojs/core";
+import {HTTPStatusCodes, Instantiable, Middleware, MiddlewareFactory} from "@kangojs/core";
 
 /**
  * Set up an Express app to serve a single page web application.
  *
  * @param options - Options to customise the middleware functionality
  */
-export function createServeSPAMiddleware(options: UseServeSPAOptions) {
+export function createServeSPAMiddleware(options: UseServeSPAOptions): Instantiable<MiddlewareFactory> {
   @Middleware({
     route: "/*",
     layer: "after-controllers"
@@ -41,4 +41,6 @@ export function createServeSPAMiddleware(options: UseServeSPAOptions) {
       }
     }
   }
+
+  return ServeSpaMiddleware;
 }
