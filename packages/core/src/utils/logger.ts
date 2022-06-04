@@ -2,6 +2,7 @@ import {LoggerBase, LogEvent, LogLevel} from "../types/logger/logger-interface";
 import {Injectable} from "../decorators/injectable.decorator";
 
 @Injectable({
+  identifier: "logger",
   injectMode: "singleton"
 })
 export class Logger extends LoggerBase {

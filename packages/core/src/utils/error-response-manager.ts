@@ -5,6 +5,7 @@ import {
   defaultFallbackMapping, ErrorHttpMapping
 } from "./error-http-mappings";
 import { BaseError } from "../errors/base.error";
+import {Injectable} from "../decorators/injectable.decorator";
 
 
 export interface ResponseManagerConfig {
@@ -12,7 +13,10 @@ export interface ResponseManagerConfig {
   fallbackErrorMapping?: ErrorHttpMapping
 }
 
-
+@Injectable({
+  identifier: "error-response-manager",
+  injectMode: "singleton"
+})
 export class ErrorResponseManager {
   private readonly errorHttpMapping: ErrorHttpMappings = defaultErrorHTTPMapping;
   private readonly fallbackErrorMapping: ErrorHttpMapping = defaultFallbackMapping;
