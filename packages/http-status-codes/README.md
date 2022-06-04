@@ -12,6 +12,19 @@
 </div>
 </div>
 
+## ⚠️ PACKAGE DEPRECATED ⚠️
+The `HTTPStatusCodes` enum has been moved to the core package ([`@kangojs/core`](https://www.npmjs.com/package/@kangojs/core)). It can now be accessed like this:
+
+```ts
+import { HTTPStatusCodes } from "@kangojs/core";
+
+// will output 404
+console.log(HTTPStatusCodes.NOT_FOUND)
+
+// will output 503
+console.log(HTTPStatusCodes.SERVICE_UNAVAILABLE)
+```
+
 ## 🤔 About
 This package provides a single enum (`HTTPStatusCodes`) that maps human-readable names to status codes... that's all.
 
