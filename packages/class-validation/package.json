@@ -1,6 +1,6 @@
 {
   "name": "@kangojs/class-validation",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "description": "Validate and transform request data using classes in KangoJS.",
   "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
   "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/class-validation",
