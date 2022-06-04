@@ -188,8 +188,8 @@ export class KangoJS {
     validationShape: any,
     dataKey: "body" | "query" | "params"
   ) {
-    return function validatorMiddleware(req: Request, res: Response, next: NextFunction) {
-      const result = validatorFunction(validationShape, req[dataKey]);
+    return async function validatorMiddleware(req: Request, res: Response, next: NextFunction) {
+      const result = await validatorFunction(validationShape, req[dataKey]);
 
       if (result === true || (typeof result !== "boolean" && result.valid)) {
         return next();

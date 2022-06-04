@@ -1,34 +1,40 @@
-import { ValidationResult } from "./types/validation-result";
 import { plainToInstance, TransformOptions } from "class-transformer";
 import { validate, ValidatorOptions } from "class-validator";
+import {RequestValidator, ValidationResult} from "@kangojs/core";
+import {ClassValidatorOptions} from "./types/class-validator-options";
+import {defaultClassTransformerOptions, defaultClassValidatorOptions} from "./types/default-options";
+import {classValidatorErrorPrettier} from "./utils/class-validator-error-prettier";
 
 
-/**
- * A factory function to return the validator function used to check if a class is valid.
- *
- * @param classTransformerOptions
- * @param classValidatorOptions
- */
-export function createValidator(classTransformerOptions: TransformOptions, classValidatorOptions: ValidatorOptions) {
-  return async function validator(dtoClass: any, data: any): Promise<ValidationResult> {
+export class ClassValidator extends RequestValidator {
+  private readonly classTransformerOptions: TransformOptions;
+  private readonly classValidatorOptions: ValidatorOptions;
+
+  constructor(options?: ClassValidatorOptions) {
+    super();
+
+    this.classTransformerOptions = options?.classTransformerOptions || defaultClassTransformerOptions;
+    this.classValidatorOptions = options?.classValidatorOptions || defaultClassValidatorOptions;
+  }
+
+  async validate(dtoClass: any, data: any): Promise<boolean | ValidationResult> {
     const dto = plainToInstance(
       dtoClass,
       data,
-      classTransformerOptions
+      this.classTransformerOptions
     );
 
-    const errors = await validate(dto, classValidatorOptions);
+    const errors = await validate(dto, this.classValidatorOptions);
 
     if (errors.length > 0) {
       return {
-        passed: false,
-        error: errors,
+        valid: false,
+        failReason: classValidatorErrorPrettier(errors)
       };
     }
 
     return {
-      passed: true,
-      dto: dto,
+      valid: true
     };
-  };
+  }
 }

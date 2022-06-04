@@ -19,15 +19,15 @@ export abstract class MiddlewareFactory {
  * This abstracts away the idea of validator middleware and instead implements a .validate method
  * which will be called in a KangoJS managed middleware.
  */
-export type ValidatorFunction = (shape: any, data: any) => boolean | ValidationResult;
+export type ValidatorFunction = (shape: any, data: any) => Promise<boolean | ValidationResult>;
 
 export abstract class RequestValidator {
-  abstract validate: ValidatorFunction
+  abstract validate(shape: any, data: any): Promise<boolean | ValidationResult>
 }
 
 export interface ValidationResult {
   valid: boolean,
-  failReason?: string
+  failReason?: any
 }
 
 /**
