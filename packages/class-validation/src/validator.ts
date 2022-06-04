@@ -1,11 +1,14 @@
 import { plainToInstance, TransformOptions } from "class-transformer";
 import { validate, ValidatorOptions } from "class-validator";
-import {RequestValidator, ValidationResult} from "@kangojs/core";
+import {Injectable, RequestValidator, ValidationResult} from "@kangojs/core";
 import {ClassValidatorOptions} from "./types/class-validator-options";
 import {defaultClassTransformerOptions, defaultClassValidatorOptions} from "./types/default-options";
 import {classValidatorErrorPrettier} from "./utils/class-validator-error-prettier";
 
-
+@Injectable({
+  identifier: "class-validator",
+  injectMode: "singleton"
+})
 export class ClassValidator extends RequestValidator {
   private readonly classTransformerOptions: TransformOptions;
   private readonly classValidatorOptions: ValidatorOptions;

@@ -9,7 +9,7 @@ import { RouteMetadata } from "../types/route/route-metadata";
  * @constructor
  */
 export function Route(routeDefinition: RouteDefinition) {
-  return function (target: Object, propertyKey: string) {
+  return function (target: any, propertyKey: string) {
     // Define the 'routes' metadata if it doesn't already exist.
     // This will only be the case for the first route decorator that's processed.
     if (!Reflect.hasMetadata(MetadataKeys.ROUTES, target.constructor)) {
