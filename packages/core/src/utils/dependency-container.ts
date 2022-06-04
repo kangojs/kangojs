@@ -31,10 +31,10 @@ export interface DependencyStore {
  */
 export class DependencyContainer {
   private dependencyStore: DependencyStore = {};
-  private readonly logger: LoggerBase;
+  private logger: LoggerBase;
 
   constructor() {
-    // Manually create the logger dependency to ensure it exists immediately
+    // Immediately create an initial logger dependency
     this.logger = new Logger();
     this.dependencyStore[Symbol.for(Logger.toString())] = {
       signature: Logger,
@@ -199,6 +199,11 @@ export class DependencyContainer {
     }
 
     this.registerDependency<T>(dependencyKey, dependencyOverride);
+
+    // If the logger was set then the internal dependency container must be updated to use it too
+    if (dependencyKey === Symbol.for("logger")) {
+      this.logger = this.useDependency<Logger>(Logger);
+    }
   }
 
   /**
@@ -218,5 +223,10 @@ export class DependencyContainer {
     }
 
     this.dependencyStore[dependencyKey] = storedDependency;
+
+    // If the logger was set then the internal dependency container must be updated to use it too
+    if (dependencyKey === Symbol.for("logger")) {
+      this.logger = this.useDependency<Logger>(Logger);
+    }
   }
 }
