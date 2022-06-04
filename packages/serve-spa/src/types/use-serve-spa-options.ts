@@ -6,7 +6,6 @@ import { Response } from "express";
 export interface UseServeSPAOptions {
     folderPath: string,
     serveFile?: string,
-    baseRoute?: string,
     fallbackMessage?: string,
     errorhandler?: (err: any, res?: Response) => Promise<void>
 }
