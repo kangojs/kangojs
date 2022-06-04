@@ -125,7 +125,7 @@ export class DependencyContainer {
     const storedDependencyConfig = this.getDependencyConfig<T>(storedDependency.signature);
 
     if (storedDependencyConfig?.injectMode === "singleton") {
-      this.logger.log({
+      this.logger.verbose({
         origin: "DependencyContainer",
         message: `Returning existing instance of ${String(dependencyKey)}`
       });
@@ -133,7 +133,7 @@ export class DependencyContainer {
       return this.dependencyStore[dependencyKey].instance as T;
     }
     else {
-      this.logger.log({
+      this.logger.verbose({
         origin: "DependencyContainer",
         message: `Returning new instance of ${String(dependencyKey)}`
       });
