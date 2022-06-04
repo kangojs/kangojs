@@ -58,6 +58,15 @@ export class DependencyContainer {
     return <DependencyConfig> Reflect.getMetadata(MetadataKeys.DEPENDENCY_CONFIG, dependency.prototype);
   }
 
+  hasDependency<T>(dependency: Instantiable<T>) {
+    const dependencyKey = this.getDependencyKey(dependency);
+    if (!dependencyKey) {
+      throw new Error("You can't check for a dependency that isn't marked as injectable");
+    }
+
+    return dependencyKey in this.dependencyStore;
+  }
+
   /**
    * Use the supplied dependency via the IoC container.
    * This method will register the dependency or retrieve the existing dependency if already registered,

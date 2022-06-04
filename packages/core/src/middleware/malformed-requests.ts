@@ -1,6 +1,6 @@
 import { Application, NextFunction, Request, Response } from "express";
-import { HTTPStatusCodes } from "@kangojs/http-status-codes";
 import {MalformedRequestOptions} from "../types/middleware/malformed-request-options";
+import {HTTPStatusCodes} from "../enums/http-status-codes";
 
 /**
  * A simple middleware to return a 400 response when an error occurs.

@@ -14,7 +14,6 @@ import {
   RequestValidator,
   ValidatorFunction
 } from "./types/middleware/middleware-interface";
-import {HTTPStatusCodes} from "@kangojs/http-status-codes";
 import {useCommonMiddleware} from "./middleware/common.middleware";
 import {useNotFoundMiddleware} from "./middleware/route-not-found";
 import {ErrorHandler, ErrorHandlerConfig} from "./utils/error-handler";
@@ -23,6 +22,7 @@ import {RouteNotFoundOptions} from "./types/middleware/route-not-found-options";
 import {Logger} from "./utils/logger";
 import {ErrorResponseManager} from "./utils/error-response-manager";
 import {MiddlewareConfig} from "./decorators/middleware.decorator";
+import {HTTPStatusCodes} from "./enums/http-status-codes";
 
 /**
  * The main object that encapsulates and manages all framework features.
@@ -59,20 +59,31 @@ export class KangoJS {
     this.routeNotFoundOptions = options.routeNotFoundOptions || undefined;
     this.errorHandlerConfig = options.errorHandlerConfig || undefined;
 
-    // Force set the ErrorHandler and ErrorResponse as they require configuration
+    // Process all dependency overrides before all other processing
+    if (options.dependencyOverrides && options.dependencyOverrides.length > 0) {
+      for (const dependencyOverride of options.dependencyOverrides) {
+        this.dependencyContainer.overrideDependency(dependencyOverride.original, dependencyOverride.override);
+      }
+    }
+
+    // Force set the ErrorHandler and ErrorResponse if required because they rely on external configuration
     // todo: is there a better way of doing this?
-    this.dependencyContainer.forceSetDependency(ErrorResponseManager, {
-      signature: ErrorResponseManager,
-      instance: new ErrorResponseManager(this.errorHandlerConfig?.responseManagerConfig)
-    });
-    this.dependencyContainer.forceSetDependency(ErrorHandler, {
-      signature: ErrorHandler,
-      instance: new ErrorHandler(
-        this.dependencyContainer.useDependency(Logger),
-        this.dependencyContainer.useDependency(ErrorResponseManager),
-        this.errorHandlerConfig
-      )
-    });
+    if (!this.dependencyContainer.hasDependency(ErrorResponseManager)) {
+      this.dependencyContainer.forceSetDependency(ErrorResponseManager, {
+        signature: ErrorResponseManager,
+        instance: new ErrorResponseManager(this.errorHandlerConfig?.responseManagerConfig)
+      });
+    }
+    if (!this.dependencyContainer.hasDependency(ErrorHandler)) {
+      this.dependencyContainer.forceSetDependency(ErrorHandler, {
+        signature: ErrorHandler,
+        instance: new ErrorHandler(
+          this.dependencyContainer.useDependency(Logger),
+          this.dependencyContainer.useDependency(ErrorResponseManager),
+          this.errorHandlerConfig
+        )
+      });
+    }
 
     const middlewareLists = this.processMiddleware(options.middleware);
 

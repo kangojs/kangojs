@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
-import { HTTPStatusCodes } from "@kangojs/http-status-codes";
 import {RouteNotFoundOptions} from "../types/middleware/route-not-found-options";
+import {HTTPStatusCodes} from "../enums/http-status-codes";
 
 /**
  * A simple middleware to return a 404 response.
