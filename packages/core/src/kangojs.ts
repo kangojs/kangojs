@@ -10,9 +10,12 @@ import { DependencyContainer, Instantiable } from "./utils/dependency-container"
 import {MiddlewareFactory, MiddlewareFunction, RequestValidator, ValidatorFunction} from "./types/middleware/middleware-interface";
 import {HTTPStatusCodes} from "@kangojs/http-status-codes";
 import {useCommonMiddleware} from "./middleware/common.middleware";
+import {useNotFoundMiddleware} from "./middleware/route-not-found";
+import {ErrorHandler, ErrorHandlerConfig} from "./utils/error-handler";
 import {CommonMiddlewareOptions} from "./types/middleware/common-middleware-options";
 import {RouteNotFoundOptions} from "./types/middleware/route-not-found-options";
-import {useNotFoundMiddleware} from "./middleware/route-not-found";
+import {Logger} from "./utils/logger";
+import {ErrorResponseManager} from "./utils/error-response-manager";
 
 /**
  * The main object that encapsulates and manages all framework features.
@@ -28,6 +31,7 @@ export class KangoJS {
   private readonly paramsValidator?: Instantiable<RequestValidator>;
   private readonly commonMiddlewareOptions?: CommonMiddlewareOptions;
   private readonly routeNotFoundOptions?: RouteNotFoundOptions;
+  private readonly errorHandlerConfig?: ErrorHandlerConfig;
 
   /**
    * The object constructor.
@@ -51,6 +55,22 @@ export class KangoJS {
     this.paramsValidator = options.paramsValidator || undefined;
     this.commonMiddlewareOptions = options.commonMiddlewareOptions || undefined;
     this.routeNotFoundOptions = options.routeNotFoundOptions || undefined;
+    this.errorHandlerConfig = options.errorHandlerConfig || undefined;
+
+    // Force set the ErrorHandler and ErrorResponse as they require configuration
+    // todo: is there a better way of doing this?
+    this.dependencyContainer.forceSetDependency(ErrorResponseManager, {
+      signature: ErrorResponseManager,
+      instance: new ErrorResponseManager(this.errorHandlerConfig?.responseManagerConfig)
+    });
+    this.dependencyContainer.forceSetDependency(ErrorHandler, {
+      signature: ErrorHandler,
+      instance: new ErrorHandler(
+        this.dependencyContainer.useDependency(Logger),
+        this.dependencyContainer.useDependency(ErrorResponseManager),
+        this.errorHandlerConfig
+      )
+    });
 
     for (const controller of options.controllers) {
       this.processController(controller);
@@ -68,6 +88,9 @@ export class KangoJS {
 
     // Setup 404 fallback middleware
     useNotFoundMiddleware(this.app, this.routeNotFoundOptions);
+
+    // Setup error handling
+    this.setupErrorHandling();
   }
 
   getApp(): Application {
@@ -215,5 +238,15 @@ export class KangoJS {
         reason: typeof result === "boolean" ? null : (result.failReason ?? null)
       });
     };
+  }
+
+  setupErrorHandling() {
+    const errorHandler = this.dependencyContainer.useDependency(ErrorHandler);
+
+    async function errorHandlerMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {
+      await errorHandler.handleError(err, res);
+    }
+
+    this.app.use(errorHandlerMiddleware);
   }
 }

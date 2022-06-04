@@ -12,6 +12,9 @@
 </div>
 </div>
 
+## ⚠️ PACKAGE DEPRECATED ⚠️
+This packages functionality has been moved to the core package [`@kangojs/core`](https://www.npmjs.com/package/@kangojs/core).
+
 ## 🤔 About
 This package provides a way to centrally handle errors in your Express application.
 

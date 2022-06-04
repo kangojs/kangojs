@@ -46,7 +46,7 @@ export class DependencyContainer {
    * Get the dependency key attached to the metadata if it exists.
    * @param dependency
    */
-  getDependencyKey<T>(dependency: Instantiable<T>): symbol | undefined {
+  private getDependencyKey<T>(dependency: Instantiable<T>): symbol | undefined {
     return <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, dependency.prototype);
   }
 
@@ -54,7 +54,7 @@ export class DependencyContainer {
    * Get the dependency config attached to the metadata if it exists.
    * @param dependency
    */
-  getDependencyConfig<T>(dependency: Instantiable<T>): DependencyConfig | undefined {
+  private getDependencyConfig<T>(dependency: Instantiable<T>): DependencyConfig | undefined {
     return <DependencyConfig> Reflect.getMetadata(MetadataKeys.DEPENDENCY_CONFIG, dependency.prototype);
   }
 
@@ -190,5 +190,24 @@ export class DependencyContainer {
     }
 
     this.registerDependency<T>(dependencyKey, dependencyOverride);
+  }
+
+  /**
+   * Force set a dependency.
+   * This bypasses all automatic dependency creation & injection, but it offers a quick
+   * way to manually create dependencies if they need something custom.
+   *
+   * // todo: can this be replaced with more generic factory based DI?
+   *
+   * @param dependency
+   * @param storedDependency
+   */
+  forceSetDependency<T>(dependency: Instantiable<T>, storedDependency: StoredDependency<T>) {
+    const dependencyKey = this.getDependencyKey<T>(dependency);
+    if (!dependencyKey) {
+      throw new Error("You can't set a dependency that isn't marked as injectable as it can never be used");
+    }
+
+    this.dependencyStore[dependencyKey] = storedDependency;
   }
 }
