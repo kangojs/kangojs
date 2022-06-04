@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import {Instantiable} from "../../utils/dependency-container";
 
 /**
  * A generic Express middleware function type.
@@ -12,6 +13,8 @@ export type MiddlewareFunction = (req: Request, res: Response, next: NextFunctio
 export abstract class MiddlewareFactory {
   abstract run: MiddlewareFunction
 }
+
+export type MiddlewareList = Instantiable<MiddlewareFactory>[];
 
 /**
  * Request validator classes to allow for dependency injection.

@@ -1,5 +1,10 @@
 import { Instantiable } from "../utils/dependency-container";
-import { MiddlewareFactory, MiddlewareFunction, RequestValidator } from "./middleware/middleware-interface";
+import {
+  MiddlewareFactory,
+  MiddlewareFunction,
+  MiddlewareList,
+  RequestValidator
+} from "./middleware/middleware-interface";
 import {CommonMiddlewareOptions} from "./middleware/common-middleware-options";
 import {RouteNotFoundOptions} from "./middleware/route-not-found-options";
 import {ErrorHandlerConfig} from "../utils/error-handler";
@@ -9,7 +14,7 @@ import {ErrorHandlerConfig} from "../utils/error-handler";
  */
 export interface KangoJSOptions {
   controllers: Instantiable<any>[],
-  middleware?: ( MiddlewareFunction | Instantiable<MiddlewareFactory> )[];
+  middleware?: MiddlewareList;
   globalPrefix?: string;
   authValidator?: Instantiable<MiddlewareFactory>;
   bodyValidator?: Instantiable<RequestValidator>;

@@ -6,4 +6,5 @@ export enum MetadataKeys {
   ROUTES = "routes",
   DEPENDENCY_KEY = "dependencyKey",
   DEPENDENCY_CONFIG = "dependencyConfig",
+  MIDDLEWARE_CONFIG = "middlewareConfig",
 }

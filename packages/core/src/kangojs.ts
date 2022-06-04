@@ -7,7 +7,13 @@ import { MetadataKeys } from "./decorators/metadata-keys";
 import { HTTPMethods } from "./enums/http-methods";
 import { RouteMetadata } from "./types/route/route-metadata";
 import { DependencyContainer, Instantiable } from "./utils/dependency-container";
-import {MiddlewareFactory, MiddlewareFunction, RequestValidator, ValidatorFunction} from "./types/middleware/middleware-interface";
+import {
+  MiddlewareFactory,
+  MiddlewareFunction,
+  MiddlewareList,
+  RequestValidator,
+  ValidatorFunction
+} from "./types/middleware/middleware-interface";
 import {HTTPStatusCodes} from "@kangojs/http-status-codes";
 import {useCommonMiddleware} from "./middleware/common.middleware";
 import {useNotFoundMiddleware} from "./middleware/route-not-found";
@@ -16,6 +22,7 @@ import {CommonMiddlewareOptions} from "./types/middleware/common-middleware-opti
 import {RouteNotFoundOptions} from "./types/middleware/route-not-found-options";
 import {Logger} from "./utils/logger";
 import {ErrorResponseManager} from "./utils/error-response-manager";
+import {MiddlewareConfig} from "./decorators/middleware.decorator";
 
 /**
  * The main object that encapsulates and manages all framework features.
@@ -41,14 +48,9 @@ export class KangoJS {
   constructor(options: KangoJSOptions) {
     this.app = express();
     this.router = Router();
-
-    // Setup dependency container
     this.dependencyContainer = new DependencyContainer();
 
-    // Setup configuration
     this.globalPrefix = options.globalPrefix || undefined;
-
-    // Setup global helper functions
     this.authValidator = options.authValidator || undefined;
     this.bodyValidator = options.bodyValidator || undefined;
     this.queryValidator = options.queryValidator || undefined;
@@ -72,18 +74,32 @@ export class KangoJS {
       )
     });
 
+    const middlewareLists = this.processMiddleware(options.middleware);
+
+    // Setup common middleware for request parsing etc
+    useCommonMiddleware(this.app, this.commonMiddlewareOptions);
+
+    // Add "before-controllers" middlewares
+    for (const middleware of middlewareLists.beforeControllers) {
+      this.addMiddleware(middleware);
+    }
+
+    // Process controller routes
     for (const controller of options.controllers) {
       this.processController(controller);
     }
 
-    // Setup common middleware
-    useCommonMiddleware(this.app, this.commonMiddlewareOptions);
-
+    // Attach the router to the app with all the controller routes setup
     if (this.globalPrefix) {
       this.app.use(this.globalPrefix, this.router);
     }
     else {
       this.app.use(this.router);
+    }
+
+    // Add "after-controllers" middlewares
+    for (const middleware of middlewareLists.beforeControllers) {
+      this.addMiddleware(middleware);
     }
 
     // Setup 404 fallback middleware
@@ -220,7 +236,7 @@ export class KangoJS {
    * @param validationShape
    * @param dataKey
    */
-  createValidatorMiddleware(
+  private createValidatorMiddleware(
     validatorFunction: ValidatorFunction,
     validationShape: any,
     dataKey: "body" | "query" | "params"
@@ -240,7 +256,7 @@ export class KangoJS {
     };
   }
 
-  setupErrorHandling() {
+  private setupErrorHandling() {
     const errorHandler = this.dependencyContainer.useDependency(ErrorHandler);
 
     async function errorHandlerMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {
@@ -248,5 +264,42 @@ export class KangoJS {
     }
 
     this.app.use(errorHandlerMiddleware);
+  }
+
+  private processMiddleware(middlewareList?: MiddlewareList): {beforeControllers: MiddlewareList, afterControllers: MiddlewareList} {
+    const before: MiddlewareList = [];
+    const after: MiddlewareList = [];
+
+    if (middlewareList && middlewareList.length > 0) {
+      for (const middleware of middlewareList) {
+        const middlewareConfig = <MiddlewareConfig> Reflect.getMetadata(MetadataKeys.MIDDLEWARE_CONFIG, middleware);
+        if (!middlewareConfig) {
+          throw new Error("You can't use a middleware that isn't marked with @Middleware");
+        }
+
+        if (middlewareConfig.layer === "before-controllers") {
+          before.push(middleware);
+        }
+        else {
+          after.push(middleware);
+        }
+      }
+    }
+
+    return {
+      beforeControllers: before,
+      afterControllers: after
+    };
+  }
+
+  private addMiddleware(middleware: Instantiable<MiddlewareFactory>) {
+    const middlewareConfig = <MiddlewareConfig> Reflect.getMetadata(MetadataKeys.MIDDLEWARE_CONFIG, middleware);
+    if (!middlewareConfig) {
+      throw new Error("You can't use a middleware that isn't marked with @Middleware");
+    }
+
+    const middlewareInstance = this.dependencyContainer.useDependency<MiddlewareFactory>(middleware);
+    const middlewareFunction = middlewareInstance.run.bind(middlewareInstance);
+    this.app.use(middlewareConfig.route ?? "/*", middlewareFunction);
   }
 }
