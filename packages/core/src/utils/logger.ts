@@ -1,4 +1,4 @@
-import {LoggerBase, LogEvent, LogLevel} from "../types/logger-interface";
+import {LoggerBase, LogEvent, LogLevel} from "../types/logger/logger-interface";
 import {Injectable} from "../decorators/injectable.decorator";
 
 @Injectable({

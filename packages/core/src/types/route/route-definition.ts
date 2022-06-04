@@ -1,4 +1,4 @@
-import { HTTPMethods } from "../utils/http-methods";
+import { HTTPMethods } from "../../enums/http-methods";
 
 /**
  * The route definition passed to the @Route decorator.

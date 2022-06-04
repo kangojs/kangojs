@@ -1,5 +1,7 @@
 import { Instantiable } from "../utils/dependency-container";
-import { MiddlewareFactory, MiddlewareFunction, RequestValidator } from "./middleware-interface";
+import { MiddlewareFactory, MiddlewareFunction, RequestValidator } from "./middleware/middleware-interface";
+import {CommonMiddlewareOptions} from "./middleware/common-middleware-options";
+import {RouteNotFoundOptions} from "./middleware/route-not-found-options";
 
 /**
  * Options that can be passed to KangoJS when it's instantiated.
@@ -12,4 +14,6 @@ export interface KangoJSOptions {
   bodyValidator?: Instantiable<RequestValidator>;
   queryValidator?: Instantiable<RequestValidator>;
   paramsValidator?: Instantiable<RequestValidator>;
+  commonMiddlewareOptions?: CommonMiddlewareOptions;
+  routeNotFoundOptions?: RouteNotFoundOptions;
 }

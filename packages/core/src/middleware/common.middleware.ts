@@ -2,10 +2,9 @@ import express, { Application } from "express";
 
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { gnuTerryPratchett } from "./middleware/gnu-terry-pratchett";
-
-import { CommonMiddlewareOptions } from "./types/common-middleware-options";
-import { useMalformedRequestMiddleware } from "./middleware/malformed-requests";
+import {CommonMiddlewareOptions} from "../types/middleware/common-middleware-options";
+import {gnuTerryPratchett} from "./gnu-terry-pratchett";
+import {useMalformedRequestMiddleware} from "./malformed-requests";
 
 /**
  * A function to add common middleware to your Express app.
@@ -14,16 +13,6 @@ import { useMalformedRequestMiddleware } from "./middleware/malformed-requests";
  * @param options - options to customise the functionality
  */
 export function useCommonMiddleware(app: Application, options: CommonMiddlewareOptions = {}) {
-  // Malformed Request Handling
-  if (!options?.disable?.malformedRequest) {
-    if (options?.config?.malformedRequest) {
-      useMalformedRequestMiddleware(app, options.config.malformedRequest);
-    }
-    else {
-      useMalformedRequestMiddleware(app);
-    }
-  }
-
   // JSON Parsing
   if (!options?.disable?.json) {
     if (options?.config?.json) {
@@ -73,5 +62,15 @@ export function useCommonMiddleware(app: Application, options: CommonMiddlewareO
   // GNU Terry Pratchett
   if (!options?.disable?.gnuTerryPratchett) {
     app.use(gnuTerryPratchett);
+  }
+
+  // Malformed Request Handling
+  if (!options?.disable?.malformedRequest) {
+    if (options?.config?.malformedRequest) {
+      useMalformedRequestMiddleware(app, options.config.malformedRequest);
+    }
+    else {
+      useMalformedRequestMiddleware(app);
+    }
   }
 }

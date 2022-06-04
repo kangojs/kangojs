@@ -4,11 +4,15 @@ import express, {Application, NextFunction, Request, Response, Router} from "exp
 
 import { KangoJSOptions } from "./types/kangojs-options";
 import { MetadataKeys } from "./decorators/metadata-keys";
-import { HTTPMethods } from "./utils/http-methods";
-import { RouteMetadata } from "./types/route-metadata";
+import { HTTPMethods } from "./enums/http-methods";
+import { RouteMetadata } from "./types/route/route-metadata";
 import { DependencyContainer, Instantiable } from "./utils/dependency-container";
-import {MiddlewareFactory, MiddlewareFunction, RequestValidator, ValidatorFunction} from "./types/middleware-interface";
+import {MiddlewareFactory, MiddlewareFunction, RequestValidator, ValidatorFunction} from "./types/middleware/middleware-interface";
 import {HTTPStatusCodes} from "@kangojs/http-status-codes";
+import {useCommonMiddleware} from "./middleware/common.middleware";
+import {CommonMiddlewareOptions} from "./types/middleware/common-middleware-options";
+import {RouteNotFoundOptions} from "./types/middleware/route-not-found-options";
+import {useNotFoundMiddleware} from "./middleware/route-not-found";
 
 /**
  * The main object that encapsulates and manages all framework features.
@@ -22,6 +26,8 @@ export class KangoJS {
   private readonly bodyValidator?: Instantiable<RequestValidator>;
   private readonly queryValidator?: Instantiable<RequestValidator>;
   private readonly paramsValidator?: Instantiable<RequestValidator>;
+  private readonly commonMiddlewareOptions?: CommonMiddlewareOptions;
+  private readonly routeNotFoundOptions?: RouteNotFoundOptions;
 
   /**
    * The object constructor.
@@ -43,10 +49,15 @@ export class KangoJS {
     this.bodyValidator = options.bodyValidator || undefined;
     this.queryValidator = options.queryValidator || undefined;
     this.paramsValidator = options.paramsValidator || undefined;
+    this.commonMiddlewareOptions = options.commonMiddlewareOptions || undefined;
+    this.routeNotFoundOptions = options.routeNotFoundOptions || undefined;
 
     for (const controller of options.controllers) {
       this.processController(controller);
     }
+
+    // Setup common middleware
+    useCommonMiddleware(this.app, this.commonMiddlewareOptions);
 
     if (this.globalPrefix) {
       this.app.use(this.globalPrefix, this.router);
@@ -54,6 +65,9 @@ export class KangoJS {
     else {
       this.app.use(this.router);
     }
+
+    // Setup 404 fallback middleware
+    useNotFoundMiddleware(this.app, this.routeNotFoundOptions);
   }
 
   getApp(): Application {
@@ -130,7 +144,7 @@ export class KangoJS {
           );
         }
         else {
-          throw new Error(`No query validator function registered but validation is required by ${routePath}`);
+          throw new Error(`No query validator registered but validation is required by ${routePath}`);
         }
       }
 
@@ -144,7 +158,7 @@ export class KangoJS {
           );
         }
         else {
-          throw new Error(`No paramsValidator function registered but validation is required by ${routePath}`);
+          throw new Error(`No params validator registered but validation is required by ${routePath}`);
         }
       }
 

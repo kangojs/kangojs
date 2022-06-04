@@ -12,6 +12,9 @@
 </div>
 </div>
 
+## ⚠️ PACKAGE DEPRECATED ⚠️
+This packages functionality has been moved to the core package [`@kangojs/core`](https://www.npmjs.com/package/@kangojs/core).
+
 ## 🤔 About
 There are common middleware functions and packages that are used in a lot of Express projects.  
 This package bundles all those together into one central place to make it quicker and easier to include them.

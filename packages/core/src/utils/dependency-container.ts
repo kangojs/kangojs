@@ -1,7 +1,7 @@
 import {MetadataKeys} from "../decorators/metadata-keys";
 import {DependencyConfig} from "../decorators/injectable.decorator";
 import {Logger} from "./logger";
-import {LoggerBase} from "../types/logger-interface";
+import {LoggerBase} from "../types/logger/logger-interface";
 
 
 /**
