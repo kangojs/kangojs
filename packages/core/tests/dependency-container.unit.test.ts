@@ -27,6 +27,16 @@ class TestUniqueDependency {
   }
 }
 
+@Injectable({
+  identifier: "test-global"
+})
+// @ts-ignore
+class TestUnknownDependency {
+  testMethod() {
+    return "test method";
+  }
+}
+
 
 describe("Dependency Container",() => {
   let testDependencyContainer: DependencyContainer;
@@ -53,6 +63,13 @@ describe("Dependency Container",() => {
     const dep2 = testDependencyContainer.useDependency<TestUniqueDependency>(TestUniqueDependency);
 
     expect(dep1 === dep2).toBeFalsy();
+  });
+
+  it("When a dependency is declared with no explicit injectMode, it should default to singleton", async () => {
+    const dep1 = testDependencyContainer.useDependency<TestUnknownDependency>(TestUnknownDependency);
+    const dep2 = testDependencyContainer.useDependency<TestUnknownDependency>(TestUnknownDependency);
+
+    expect(dep1 === dep2).toBeTruthy();
   });
 
   it("When a dependency is overridden, the new dependency override should then be returned", async () => {

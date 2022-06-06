@@ -142,6 +142,10 @@ export class KangoJS {
     const controllerGlobalRoute = <string> Reflect.getMetadata(MetadataKeys.ROUTE_PREFIX, controller);
     const controllerRoutes = <Array<RouteMetadata>> Reflect.getMetadata(MetadataKeys.ROUTES, controller);
 
+    if (!controllerGlobalRoute || !controllerRoutes) {
+      throw new Error("Supplied controller does not appear to be decorated correctly.");
+    }
+
     for (const route of controllerRoutes) {
       // Set route path, making sure to handle if the path has '/' or not.
       let routePath = controllerGlobalRoute.startsWith("/")
