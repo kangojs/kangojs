@@ -11,6 +11,7 @@ import {HTTPStatusCodes, Instantiable, Middleware, MiddlewareFactory} from "@kan
  */
 export function createServeSPAMiddleware(options: UseServeSPAOptions): Instantiable<MiddlewareFactory> {
   @Middleware({
+    identifier: "serve-spa-middleware",
     route: "/*",
     layer: "after-controllers"
   })

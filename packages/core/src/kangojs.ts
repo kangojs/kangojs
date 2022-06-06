@@ -283,7 +283,7 @@ export class KangoJS {
 
     if (middlewareList && middlewareList.length > 0) {
       for (const middleware of middlewareList) {
-        const middlewareConfig = <MiddlewareConfig> Reflect.getMetadata(MetadataKeys.MIDDLEWARE_CONFIG, middleware);
+        const middlewareConfig = <MiddlewareConfig> Reflect.getMetadata(MetadataKeys.MIDDLEWARE_CONFIG, middleware.prototype);
         if (!middlewareConfig) {
           throw new Error("You can't use a middleware that isn't marked with @Middleware");
         }
@@ -304,7 +304,7 @@ export class KangoJS {
   }
 
   private addMiddleware(middleware: Instantiable<MiddlewareFactory>) {
-    const middlewareConfig = <MiddlewareConfig> Reflect.getMetadata(MetadataKeys.MIDDLEWARE_CONFIG, middleware);
+    const middlewareConfig = <MiddlewareConfig> Reflect.getMetadata(MetadataKeys.MIDDLEWARE_CONFIG, middleware.prototype);
     if (!middlewareConfig) {
       throw new Error("You can't use a middleware that isn't marked with @Middleware");
     }
