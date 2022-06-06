@@ -13,11 +13,12 @@
   "scripts": {
     "prepare": "husky install",
     "install-all": "concurrently 'npm:install:*'",
-    "install:class-validation": "cd packages/class-validation && npm i",
-    "install:common-middleware": "cd packages/common-middleware && npm i",
     "install:core": "cd packages/core && npm i",
-    "install:error-handler": "cd packages/error-handler && npm i",
-    "install:http-status-codes": "cd packages/http-status-codes && npm i",
-    "install:serve-spa": "cd packages/serve-spa && npm i"
+    "install:class-validation": "cd packages/class-validation && npm i",
+    "install:serve-spa": "cd packages/serve-spa && npm i",
+    "build-all": "concurrently 'npm:build:*'",
+    "build:core": "cd packages/core && npm run build",
+    "build:class-validation": "cd packages/class-validation && npm run build",
+    "build:serve-spa": "cd packages/serve-spa && npm run build"
   }
 }
