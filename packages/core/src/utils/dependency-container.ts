@@ -128,22 +128,19 @@ export class DependencyContainer {
     const constructorArguments: any[] = [];
     const argumentTypes = <any[]> Reflect.getMetadata("design:paramtypes", dependency) ?? [];
 
-    for (const constructorArgument in argumentTypes) {
-      if (typeof constructorArgument === "object") {
-        const constructorArgumentKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, constructorArgument);
+    for (const constructorArgument of argumentTypes) {
+      if (constructorArgument.constructor) {
+        const constructorArgumentKey = <symbol> Reflect.getMetadata(MetadataKeys.DEPENDENCY_KEY, constructorArgument.prototype);
 
         if (constructorArgumentKey) {
           constructorArguments.push(
-            this.useDependency<T>(dependency)
+            this.useDependency<T>(constructorArgument)
           );
-        }
-        else {
-          constructorArguments.push(constructorArgument);
+          continue;
         }
       }
-      else {
-        constructorArguments.push(constructorArgument);
-      }
+
+      constructorArguments.push(constructorArgument);
     }
 
     this.dependencyStore[dependencyKey] = {
