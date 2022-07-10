@@ -51,6 +51,9 @@ export class ErrorResponseManager {
       if (err.identifier) {
         identifier = err.identifier;
       }
+      else if (this.errorHttpMapping[errorName]?.identifier) {
+        message = this.errorHttpMapping[errorName].identifier;
+      }
     }
 
     return res.status(httpCode).send({
