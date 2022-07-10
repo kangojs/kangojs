@@ -38,6 +38,7 @@ export class ErrorResponseManager {
     const errorName = err.constructor.name;
     const httpCode = this.errorHttpMapping[errorName]?.httpCode || defaultFallbackMapping.httpCode;
     let message = defaultFallbackMapping.defaultMessage;
+    let identifier = defaultFallbackMapping.identifier;
 
     if (err instanceof BaseError) {
       if (err.applicationMessage) {
@@ -46,9 +47,14 @@ export class ErrorResponseManager {
       else if (this.errorHttpMapping[errorName]?.defaultMessage) {
         message = this.errorHttpMapping[errorName].defaultMessage;
       }
+
+      if (err.identifier) {
+        identifier = err.identifier;
+      }
     }
 
     return res.status(httpCode).send({
+      identifier: identifier,
       statusCode: httpCode,
       message: message
     });

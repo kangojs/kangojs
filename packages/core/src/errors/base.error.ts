@@ -2,11 +2,11 @@
  * Configuration to pass to all errors.
  */
 export interface ErrorConfig {
-  /** An optional ID that can be used to identify the error. */
-  id?: string;
+  /** An optional identifier that can be used to identify the error. */
+  identifier?: string;
 
   /** The internal error message. */
-  message: string;
+  message?: string;
 
   /** An application message that can be exposed to the user. */
   applicationMessage?: string;
@@ -20,12 +20,14 @@ export interface ErrorConfig {
  * The base error that all other errors inherit from.
  */
 export class BaseError extends Error {
+  identifier?: string;
   applicationMessage?: string;
   originalError?: any;
 
   constructor(config: ErrorConfig) {
     super(config.message);
 
+    this.identifier = config.identifier || undefined;
     this.applicationMessage = config.applicationMessage || undefined;
     this.originalError = config.originalError || undefined;
   }
