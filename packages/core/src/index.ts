@@ -9,6 +9,7 @@ export * from "./decorators/route.decorator";
 export * from "./enums/http-status-codes";
 export * from "./enums/http-methods";
 
+export * from "./errors/error-identifiers";
 export * from "./errors/base.error";
 export * from "./errors/system.error";
 export * from "./errors/user.error";
