@@ -1,11 +1,12 @@
 import {HTTPStatusCodes} from "../enums/http-status-codes";
 import {
-  ACCESS_DENIED, ACCESS_FORBIDDEN,
+  ACCESS_FORBIDDEN, ACCESS_UNAUTHORIZED,
   RESOURCE_NOT_FOUND,
   RESOURCE_NOT_UNIQUE, RESOURCE_RELATIONSHIP_INVALID,
   SYSTEM_UNEXPECTED,
   USER_REQUEST_INVALID
 } from "../errors/error-identifiers";
+
 
 export interface ErrorHttpMapping {
   identifier: string,
@@ -44,8 +45,8 @@ export const defaultErrorHTTPMapping: ErrorHttpMappings = {
     httpCode: HTTPStatusCodes.BAD_REQUEST,
     defaultMessage: "Your request includes an invalid relationship to another resource."
   },
-  "AccessDeniedError": {
-    identifier: ACCESS_DENIED,
+  "AccessUnauthorizedError": {
+    identifier: ACCESS_UNAUTHORIZED,
     httpCode: HTTPStatusCodes.UNAUTHORIZED,
     defaultMessage: "Your are not authorized to access the given resource."
   },

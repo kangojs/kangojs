@@ -25,7 +25,7 @@ export class ErrorHandler {
   private readonly _safeErrors: string[] = [
     "UserError",
     "AccessError",
-    "AccessDeniedError",
+    "AccessUnauthorizedError",
     "AccessForbiddenError",
     "ResourceError",
     "ResourceNotFoundError",
