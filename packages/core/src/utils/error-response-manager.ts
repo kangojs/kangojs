@@ -52,7 +52,7 @@ export class ErrorResponseManager {
         identifier = err.identifier;
       }
       else if (this.errorHttpMapping[errorName]?.identifier) {
-        message = this.errorHttpMapping[errorName].identifier;
+        identifier = this.errorHttpMapping[errorName].identifier;
       }
     }
 
