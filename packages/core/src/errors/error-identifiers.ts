@@ -2,6 +2,9 @@
  * Error identifiers
  */
 export enum ErrorIdentifiers {
+  // Generalised Errors
+  NOT_FOUND = "not-found",
+
   // System Errors
   SYSTEM_UNEXPECTED = "system-unexpected-error",
   

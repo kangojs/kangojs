@@ -23,6 +23,7 @@ import {Logger} from "./utils/logger";
 import {ErrorResponseManager} from "./utils/error-response-manager";
 import {MiddlewareConfig} from "./decorators/middleware.decorator";
 import {HTTPStatusCodes} from "./enums/http-status-codes";
+import {ErrorIdentifiers} from "./errors/error-identifiers";
 
 /**
  * The main object that encapsulates and manages all framework features.
@@ -263,9 +264,21 @@ export class KangoJS {
         return next();
       }
 
+      let message;
+      if (dataKey === "params") {
+        message = "The supplied URL parameters did not pass validation";
+      }
+      else if (dataKey === "query") {
+        message = "The supplied query parameters did not pass validation";
+      }
+      else {
+        message = "The supplied body data did not pass validation";
+      }
+
       return res.status(HTTPStatusCodes.BAD_REQUEST).send({
+        identifier: ErrorIdentifiers.USER_REQUEST_INVALID,
         statusCode: HTTPStatusCodes.BAD_REQUEST,
-        message: "The supplied body data did not pass validation.",
+        message: message,
         reason: typeof result === "boolean" ? null : (result.failReason ?? null)
       });
     };
