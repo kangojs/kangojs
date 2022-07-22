@@ -2,9 +2,11 @@
  * Keys used when defining object metadata with reflect-metadata.
  */
 export enum MetadataKeys {
-  ROUTE_PREFIX = "routePrefix",
-  ROUTES = "routes",
-  DEPENDENCY_KEY = "dependencyKey",
-  DEPENDENCY_CONFIG = "dependencyConfig",
-  MIDDLEWARE_CONFIG = "middlewareConfig",
+  ROUTE_PREFIX = "ROUTE_PREFIX",
+  ROUTES = "ROUTES",
+  DEPENDENCY_KEY = "DEPENDENCY_KEY",
+  DEPENDENCY_CONFIG = "DEPENDENCY_CONFIG",
+  MIDDLEWARE_CONFIG = "MIDDLEWARE_CONFIG",
+  WEB_SOCKET_NAMESPACE = "WEB_SOCKET_NAMESPACE",
+  WEB_SOCKET_EVENT_HANDLERS = "WEB_SOCKET_EVENT_HANDLERS",
 }
