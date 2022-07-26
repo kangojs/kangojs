@@ -1,0 +1,36 @@
+{
+  "name": "@kangojs/zod-validation",
+  "version": "0.0.1",
+  "description": "Validate data in KangoJS using Zod",
+  "author": "Ben-Ryder <dev@benryder.me> (https://www.benryder.me)",
+  "homepage": "https://github.com/kangojs/kangojs/tree/main/packages/zod-validation",
+  "bugs": "https://github.com/kangojs/kangojs/issues",
+  "license": "MIT",
+  "main": "build/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rm -rf ./build && tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "build/**/*"
+  ],
+  "keywords": [],
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.5.2",
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.3",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "@kangojs/core": "^2.0.0-alpha.14"
+  },
+  "peerDependencies": {
+    "zod": "^3.17.10"
+  }
+}
